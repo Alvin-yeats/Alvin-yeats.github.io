@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>2.4 二分搜索扩展题型 | Alvin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Related Questions
+Rotate String: abcdefg, offset=3 -&amp;gt; efgabcd  
+Rotate Words List: I love you -&amp;gt; you love I   
+
+ConclusionBinary Search – Exclude half every timeSorted Array – If array is sorted">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.4 二分搜索扩展题型">
+<meta property="og:url" content="www.wyiren.com/2015/09/16/算法/2_4/index.html">
+<meta property="og:site_name" content="Alvin's Blog">
+<meta property="og:description" content="Related Questions
+Rotate String: abcdefg, offset=3 -&amp;gt; efgabcd  
+Rotate Words List: I love you -&amp;gt; you love I   
+
+ConclusionBinary Search – Exclude half every timeSorted Array – If array is sorted">
+<meta property="og:updated_time" content="2015-09-16T08:07:45.405Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2.4 二分搜索扩展题型">
+<meta name="twitter:description" content="Related Questions
+Rotate String: abcdefg, offset=3 -&amp;gt; efgabcd  
+Rotate Words List: I love you -&amp;gt; you love I   
+
+ConclusionBinary Search – Exclude half every timeSorted Array – If array is sorted">
+  
+    <link rel="alternative" href="/atom.xml" title="Alvin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Alvin&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Just for Fun</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="www.wyiren.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-算法/2_4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/16/算法/2_4/" class="article-date">
+  <time datetime="2015-09-16T08:07:45.405Z" itemprop="datePublished">2015-09-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      2.4 二分搜索扩展题型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Related_Questions">Related Questions</h2><ol>
+<li>Rotate String: abcdefg, offset=3 -&gt; efgabcd  </li>
+<li>Rotate Words List: I love you -&gt; you love I   </li>
+</ol>
+<p>Conclusion<br>Binary Search<br> – Exclude half every time<br>Sorted Array<br> – If array is sorted, try binary search<br> – If array is not sorted, try sort it first  </p>
+<p>解题思路：针对1中的例子，先转置“abcd”为“dcba”，“efg”转置为“gfe”，此时string由“abcdefg”变为了“dcbagfe”，然后转置string得到“efgabcd”</p>
+<p>示例代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">"string.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Move the first n chars in a string to its end</span></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">LeftRotateString</span><span class="params">(<span class="keyword">char</span>* pStr, <span class="keyword">unsigned</span> <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(pStr != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> nLength = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(<span class="built_in">strlen</span>(pStr));</span><br><span class="line">        <span class="keyword">if</span>(nLength &gt; <span class="number">0</span> || n == <span class="number">0</span> || n &gt; nLength)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">char</span>* pFirstStart = pStr;</span><br><span class="line">            <span class="keyword">char</span>* pFirstEnd = pStr + n - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">char</span>* pSecondStart = pStr + n;</span><br><span class="line">            <span class="keyword">char</span>* pSecondEnd = pStr + nLength - <span class="number">1</span>;</span><br><span class="line">           </span><br><span class="line">            <span class="comment">// reverse the first part of the string</span></span><br><span class="line">            ReverseString(pFirstStart, pFirstEnd);</span><br><span class="line">            <span class="comment">// reverse the second part of the strint</span></span><br><span class="line">            ReverseString(pSecondStart, pSecondEnd);</span><br><span class="line">            <span class="comment">// reverse the whole string</span></span><br><span class="line">            ReverseString(pFirstStart, pSecondEnd);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">return</span> pStr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reverse the string between pStart and pEnd</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReverseString</span><span class="params">(<span class="keyword">char</span>* pStart, <span class="keyword">char</span>* pEnd)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(pStart == <span class="literal">NULL</span> || pEnd == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(pStart &lt;= pEnd)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">char</span> temp = *pStart;</span><br><span class="line">            *pStart = *pEnd;</span><br><span class="line">            *pEnd = temp;</span><br><span class="line">           </span><br><span class="line">            pStart ++;</span><br><span class="line">            pEnd --;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="算法效率测试">算法效率测试</h2><p>下面那长长一坨，有两百多行的代码是干嘛用的呢？</p>
+<p>这段代码介绍了几种常见的反转算法，而且编写了一个可以计算算法执行时间的函数。  </p>
+<p>输入接口：<br>algnum：你选的算法<br>numtests：测试次数<br>n：反转起始位置<br>rotdist：要反转的数据的长度  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Copyright (C) 1999 Lucent Technologies */</span></span><br><span class="line"><span class="comment">/* From 'Programming Pearls' by Jon Bentley */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* rotate.c -- time algorithms for rotating a vector</span><br><span class="line">    Input lines:</span><br><span class="line">        algnum numtests n rotdist</span><br><span class="line">        algnum:</span><br><span class="line">          1: reversal algorithm</span><br><span class="line">          2: juggling algorithm</span><br><span class="line">          22:  juggling algorithm with mod rather than if</span><br><span class="line">          3: gcd algorithm</span><br><span class="line">          4: slide (don't rotate): baseline alg for timing</span><br><span class="line">    To test the algorithms, recompile and change main to call testrot</span><br><span class="line"> */</span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> MAXN <span class="number">10000000</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x[MAXN];</span><br><span class="line"><span class="keyword">int</span> rotdist, n;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Alg 1: Rotate by reversal */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> t;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">        t = x[i]; x[i] = x[j]; x[j] = t;</span><br><span class="line">        i++;</span><br><span class="line">        j--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">revrot</span><span class="params">(<span class="keyword">int</span> rotdist, <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;   reverse(<span class="number">0</span>, rotdist-<span class="number">1</span>);</span><br><span class="line">    reverse(rotdist, n-<span class="number">1</span>);</span><br><span class="line">    reverse(<span class="number">0</span>, n-<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Alg 2: Juggling (dolphin) rotation */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">gcd</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> t;</span><br><span class="line">    <span class="keyword">while</span> (i != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j &gt;= i)</span><br><span class="line">            j -= i;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            t = i; i = j; j = t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">jugglerot</span><span class="params">(<span class="keyword">int</span> rotdist, <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> cycles, i, j, k, t;</span><br><span class="line">    cycles = gcd(rotdist, n);</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; cycles; i++) &#123;</span><br><span class="line">        <span class="comment">/* move i-th values of blocks */</span></span><br><span class="line">        t = x[i];</span><br><span class="line">        j = i;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            k = j + rotdist;</span><br><span class="line">            <span class="keyword">if</span> (k &gt;= n)</span><br><span class="line">                k -= n;</span><br><span class="line">            <span class="keyword">if</span> (k == i)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            x[j] = x[k];</span><br><span class="line">            j = k;</span><br><span class="line">        &#125;</span><br><span class="line">        x[j] = t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">jugglerot2</span><span class="params">(<span class="keyword">int</span> rotdist, <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> cycles, i, j, k, t;</span><br><span class="line">    cycles = gcd(rotdist, n);</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; cycles; i++) &#123;</span><br><span class="line">        <span class="comment">/* move i-th values of blocks */</span></span><br><span class="line">        t = x[i];</span><br><span class="line">        j = i;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">          <span class="comment">/* Replace with mod below</span><br><span class="line">            k = j + rotdist;</span><br><span class="line">            if (k &gt;= n)</span><br><span class="line">                k -= n;</span><br><span class="line">           */</span></span><br><span class="line">            k = (j + rotdist) % n;</span><br><span class="line">            <span class="keyword">if</span> (k == i)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            x[j] = x[k];</span><br><span class="line">            j = k;</span><br><span class="line">        &#125;</span><br><span class="line">        x[j] = t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Alg 3: Recursive rotate (using gcd structure) */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> k)</span> <span class="comment">/* swap x[i..i+k-1] with x[j..j+k-1] */</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> t;</span><br><span class="line">    <span class="keyword">while</span> (k-- &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        t = x[i]; x[i] = x[j]; x[j] = t;</span><br><span class="line">        i++;</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gcdrot</span><span class="params">(<span class="keyword">int</span> rotdist, <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> i, j, p;</span><br><span class="line">    <span class="keyword">if</span> (rotdist == <span class="number">0</span> || rotdist == n)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    i = p = rotdist;</span><br><span class="line">    j = n - p;</span><br><span class="line">    <span class="keyword">while</span> (i != j) &#123;</span><br><span class="line">        <span class="comment">/* invariant:</span><br><span class="line">            x[0  ..p-i  ] is in final position</span><br><span class="line">            x[p-i..p-1  ] = a (to be swapped with b)</span><br><span class="line">            x[p  ..p+j-1] = b (to be swapped with a)</span><br><span class="line">            x[p+j..n-1  ] in final position</span><br><span class="line">        */</span></span><br><span class="line">        <span class="keyword">if</span> (i &gt; j) &#123;</span><br><span class="line">            swap(p-i, p, j);</span><br><span class="line">            i -= j;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            swap(p-i, p+j-i, i);</span><br><span class="line">            j -= i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    swap(p-i, p, i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isogcd</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span><br><span class="line"></span>&#123;   <span class="keyword">if</span> (i == <span class="number">0</span>) <span class="keyword">return</span> j;</span><br><span class="line">    <span class="keyword">if</span> (j == <span class="number">0</span>) <span class="keyword">return</span> i;</span><br><span class="line">    <span class="keyword">while</span> (i != j) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt; j)</span><br><span class="line">            i -= j;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            j -= i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testgcd</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;i, &amp;j) != EOF)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, isogcd(i,j) );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Alg 4: slide (don't rotate): baseline alg for timing*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">slide</span><span class="params">(<span class="keyword">int</span> rotdist, <span class="keyword">int</span> n)</span> <span class="comment">/* Benchmark: slide left rotdist (lose 0..rotdist-1) */</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = rotdist; i &lt; n; i++)</span><br><span class="line">        x[i-rotdist] = x[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Test all algs */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initx</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        x[i] = i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printx</span><span class="params">()</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" %d"</span>, x[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">roterror</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">" rotate bug %d %d\n"</span>, n, rotdist);</span><br><span class="line">    printx();</span><br><span class="line">    <span class="built_in">exit</span> (<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">checkrot</span><span class="params">()</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n-rotdist; i++)</span><br><span class="line">        <span class="keyword">if</span> (x[i] != i+rotdist)</span><br><span class="line">            roterror();</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; rotdist; i++)</span><br><span class="line">        <span class="keyword">if</span> (x[n-rotdist+i] != i)</span><br><span class="line">            roterror();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testrot</span><span class="params">()</span></span><br><span class="line"></span>&#123;   <span class="keyword">for</span> (n = <span class="number">1</span>; n &lt;= <span class="number">20</span>; n++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" testing n=%d\n"</span>, n);</span><br><span class="line">        <span class="keyword">for</span> (rotdist = <span class="number">0</span>; rotdist &lt;= n; rotdist++) &#123;</span><br><span class="line">            <span class="comment">/* printf("  testing rotdist=%d\n", rotdist); */</span></span><br><span class="line">            initx(); revrot(rotdist, n);     checkrot();</span><br><span class="line">            initx(); jugglerot(rotdist, n);  checkrot();</span><br><span class="line">            initx(); jugglerot2(rotdist, n); checkrot();</span><br><span class="line">            initx(); gcdrot(rotdist, n);     checkrot();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Timing */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">timedriver</span><span class="params">()</span></span><br><span class="line"></span>&#123;   <span class="keyword">int</span> i, algnum, numtests, start, clicks;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">"%d %d %d %d"</span>, &amp;algnum, &amp;numtests, &amp;n, &amp;rotdist) != EOF) &#123;</span><br><span class="line">        initx();</span><br><span class="line">        start = clock();</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numtests; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (algnum == <span class="number">1</span>)</span><br><span class="line">                revrot(rotdist, n);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (algnum == <span class="number">2</span>)</span><br><span class="line">                jugglerot(rotdist, n);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (algnum == <span class="number">22</span>)</span><br><span class="line">                jugglerot2(rotdist, n);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (algnum == <span class="number">3</span>)</span><br><span class="line">                gcdrot(rotdist, n);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (algnum == <span class="number">4</span>)</span><br><span class="line">                slide(rotdist, n);</span><br><span class="line">        &#125;</span><br><span class="line">        clicks = clock() - start;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\t%d\t%d\t%d\t%d\t%g\n"</span>,</span><br><span class="line">            algnum, numtests, n, rotdist, clicks,</span><br><span class="line">            <span class="number">1e9</span>*clicks/((<span class="keyword">float</span>) CLOCKS_PER_SEC*n*numtests));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Main */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;   <span class="comment">/* testrot(); */</span></span><br><span class="line">    timedriver();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="www.wyiren.com/2015/09/16/算法/2_4/" data-id="ciemhqhkm0003nsnus9kgfzo3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/16/算法/3_1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          3.1 二叉树简介及先序、中序、后序
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/极客班/" style="font-size: 10px;">极客班</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/09/16/算法/1_3/">1.3 工具和经验谈</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/16/算法/1_2/">1.2 面试中的算法模版</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/16/算法/1_1/">1.1 从第一道面试题谈起</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/16/算法/3_3/">3.3 BFS与二叉搜索树</a>
+          </li>
+        
+          <li>
+            <a href="/2015/09/16/算法/2_3/">2.3 排序数组常见算法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Alvin Yeats<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
