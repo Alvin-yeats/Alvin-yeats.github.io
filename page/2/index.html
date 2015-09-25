@@ -67,10 +67,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-算法/2_3" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-算法/1_1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/2_3/" class="article-date">
-  <time datetime="2015-09-17T07:10:46.347Z" itemprop="datePublished">2015-09-17</time>
+    <a href="/2015/09/17/算法/1_1/" class="article-date">
+  <time datetime="2015-09-17T07:09:45.474Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/2_3/">8. 排序数组常见算法</a>
+      <a class="article-title" href="/2015/09/17/算法/1_1/">1. 从第一道面试题谈起</a>
     </h1>
   
 
@@ -89,45 +89,77 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>前几个题比较简单，最后一个合并K个有序数组，不熟悉STL模板的童鞋可能会抓狂，不要紧，我已经添加了详细的注释，只要认真看下去认真思考，相信你可以的！</p>
-<h2 id="Remove_Duplicates_from_Sorted_Array_I,II">Remove Duplicates from Sorted Array I,II</h2><p>对有序数组去重  </p>
-<h3 id="每个元素只能出现一次">每个元素只能出现一次</h3><p><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" rel="external">Remove Duplicates from Sorted Array I</a>  </p>
-<p>问题描述：给你一个排好序的数组，去掉重复的元素保证每个元素只出现一次。不允许使用另外一个数组来提供额外的空间，你必须在原数组中进行这个工作。</p>
-<p>解题思路：董老师这里运用了fast,low两个值，只有当下一个元素与上一个唯一元素不重复时slow才加1，slow实际存储的去重后新数组的长度，而fast是用来遍历数组的，当fast超过数组的size时，即意味着遍历结束，我们的去重工作完成。由于原题要求不允许使用额外的空间，所以下面的解法是直接对已重复的元素所在地址进行覆盖，后面的会被直接移到前面。</p>
-<p>示例代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span><br><span class="line">Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.</span><br><span class="line">Do not allocate extra space for another array, you must do this in place with constant memory.</span><br><span class="line">For example,</span><br><span class="line">Given input array A = [1,1,2],</span><br><span class="line">Your function should return length = 2, and A is now [1,2].</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="keyword">int</span>[] A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> size = A.length;</span><br><span class="line">        <span class="keyword">if</span> (size &lt;= <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> fast = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> slow = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ( fast &lt; size) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[slow] != A[fast]) &#123;</span><br><span class="line">                A[slow+<span class="number">1</span>] = A[fast];</span><br><span class="line">                slow++;</span><br><span class="line">            &#125;</span><br><span class="line">            fast++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="如果我们允许每个元素可以出现至少两次呢？">如果我们允许每个元素可以出现至少两次呢？</h3><p><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/" target="_blank" rel="external">Remove Duplicates from Sorted Array II</a></p>
-<p>很简单，我们加个标志位来记录元素的重复次数就好了，当重复次数超过两次时我们再进行去重处理。</p>
-<p>示例代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span><br><span class="line">Follow up for "Remove Duplicates":</span><br><span class="line">What if duplicates are allowed at most twice?</span><br><span class="line">For example,</span><br><span class="line">Given sorted array A = [1,1,1,2,2,3],</span><br><span class="line">Your function should return length = 5, and A is now [1,1,2,2,3].</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="keyword">int</span>[] A)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Start typing your Java solution below</span></span><br><span class="line">        <span class="comment">// DO NOT write main() function</span></span><br><span class="line">        <span class="keyword">int</span> size = A.length;</span><br><span class="line">        <span class="keyword">if</span> (size &lt;= <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        <span class="keyword">int</span> fast = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> slow = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dup = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ( fast &lt; size) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[slow] != A[fast]) &#123;</span><br><span class="line">                A[slow+<span class="number">1</span>] = A[fast];</span><br><span class="line">                slow++;</span><br><span class="line">                dup = <span class="number">0</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">                dup++;</span><br><span class="line">                <span class="keyword">if</span> (dup &lt; <span class="number">2</span>) &#123;</span><br><span class="line">                    A[slow+<span class="number">1</span>] = A[fast];</span><br><span class="line">                    slow++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            fast++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Intersection_of_2_sorted_array">Intersection of 2 sorted array</h2><p>在有序数组中找交集：   </p>
-<pre><code>array1:[<span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">6</span>]  
-array2:[<span class="number">3</span> <span class="number">6</span> <span class="number">9</span> <span class="number">10</span>]  
-
-<span class="keyword">return</span> [<span class="number">3</span>,<span class="number">6</span>]
-</code></pre><p>解题思路：遍历比较A、B两数组中的元素，如果出现相等的元素便将该值加入到新的数组中。无疑，用vector这种动态容器来充当新数组是最好的。</p>
-<p>示例代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; findIntersection(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; A, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; B) &#123;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; intersection;</span><br><span class="line">  <span class="keyword">int</span> n1 = A.size();</span><br><span class="line">  <span class="keyword">int</span> n2 = B.size();</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A[i] &gt; B[j]) &#123;</span><br><span class="line">          j++;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (B[j] &gt; A[i]) &#123;</span><br><span class="line">          i++;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          intersection.push_back(A[i]);</span><br><span class="line">          i++;</span><br><span class="line">          j++;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> intersection;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Merge_Sorted_Array">Merge Sorted Array</h2><p>合并有序数组</p>
-<p>1.Merge Two Sorted Array into a new Array<br>2.Merge Two Sorted Array A and B into A, assume A has enough space.</p>
-<p>解题思路：董老师的程序是将组合后的新元素塞到了数组B里面。大致思路就是我们要想让B成为合并后的新数组，就必须确保B多余的空间大于等于A数组的长度，所以下面代码给A定了n的长度，而B为2*n。B从第n位开始都初始化为0，意味着后面是可以用来被重新赋值覆盖的。在填充新的数组B的时候，为了不将前面的元素覆盖，我们从后往前填充数组。</p>
-<p>示例代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Set A[n] = &#123;<span class="number">2</span>, <span class="number">11</span>, <span class="number">54</span>, <span class="number">87</span>, <span class="number">99</span>&#125;</span><br><span class="line">Set B[<span class="number">2</span>*n] = = &#123;<span class="number">4</span>, <span class="number">9</span>, <span class="number">34</span>, <span class="number">67</span>, <span class="number">98</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Merge</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> B[], <span class="keyword">int</span> size_b,  <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    indexA=n -<span class="number">1</span>;</span><br><span class="line">    indexB=n -<span class="number">1</span>;</span><br><span class="line">    index_new=<span class="number">2</span>n -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (index_new &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[indexA] &lt; B[indexB]) &#123;</span><br><span class="line">            B[index_new] = B[indexB];</span><br><span class="line">            indexB--;</span><br><span class="line">            index_new--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            B[index_new] = A[indexA];</span><br><span class="line">            indexA--;</span><br><span class="line">            index_new--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Optimization if A or B can be directly copied</span></span><br><span class="line">        <span class="comment">//如果B原有的元素为空，那么直接像B中填充即可</span></span><br><span class="line">        <span class="keyword">if</span> (indexB == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">while</span>(index_new &gt;= <span class="number">0</span>)</span><br><span class="line">                B[index_new--] = A[indexA--];</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果A为空，那没必要合并了</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (indexA == -<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Merge_K_Sorted_List">Merge K Sorted List</h2><p>Merge k sorted linked lists to be one sorted list.</p>
-<p>在该题中，董老师用到了<a href="http://www.cplusplus.com/reference/queue/priority_queue/" target="_blank" rel="external">优先队列</a>，这里我简单介绍下它的概念。</p>
-<p>priority_queue的模板声明带有三个参数:<br>priority_queue<type, container,="" functional=""><br>其中Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。<br>Container必须是用数组实现的容器，比如 vector, deque 但不能用 list.<br>STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以如果你把后面俩个参数缺省的话，优先队列就是大顶堆，队头元素最大。</type,></p>
-<p>优先队列中元素出队列的顺序由元素的优先级决定，而不是元素进入队列的次序 ，</p>
-<p>例如：我们常用的操作就是对数据排序，优先队列默认的是数据大的优先级高，所以我们无论按照什么顺序push一堆数，最终在队列里总是top出最大的元素。</p>
-<p>这里需要重点说明的是当你使用priority_queue来push数据的时候，你录入的数据并不会进行排序，只有当你pop数据的时候，priority_queue才会根据Functional规定的数据优先级来弹出优先级最高的那个数据。</p>
-<p>解题思路：利用<a href="https://zh.wikipedia.org/wiki/%E6%9C%80%E5%A4%A7%E2%80%94%E6%9C%80%E5%B0%8F%E5%A0%86" target="_blank" rel="external">最小堆</a>这种数据结构，我们首先把k个链表的首元素都加入最小堆中，它们会自动排好序。然后我们每次取出最小的那个元素加入我们最终结果的链表中，然后把刚刚被取出元素的那个链表的下一个元素再加入堆中，下次仍从堆中取出最小的元素做相同的操作，以此类推，直到堆中没有元素了，此时k个链表也合并为了一个链表，返回首节点即可，注意head(存储最终结果的链表头)跟heap(最小堆)不要混淆。</p>
-<p>示例代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">struct</span> ListNode &#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode *next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x) : val(x), next(<span class="literal">NULL</span>) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//重载操作符，定义优先级为数据越小优先级越大</span></span><br><span class="line"><span class="keyword">struct</span> cmp &#123;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> ListNode *a, <span class="keyword">const</span> ListNode *b)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (a-&gt;val &lt; b-&gt;val)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">ListNode *<span class="title">mergeKLists</span><span class="params">(<span class="built_in">vector</span>&lt;ListNode *&gt; &amp;lists)</span> </span>&#123;</span><br><span class="line">    priority_queue&lt;ListNode *, <span class="built_in">vector</span>&lt;ListNode *&gt;, cmp&gt; heap;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将每个链表中的头结点（即每个数组开头最小的值）压入堆中</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; lists.size(); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (lists[i]) &#123;</span><br><span class="line">            <span class="comment">// for the corner case: [&#123;&#125;]</span></span><br><span class="line">            heap.push(lists[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ListNode *prevNode = <span class="literal">NULL</span>;</span><br><span class="line">    ListNode *head = <span class="literal">NULL</span>;</span><br><span class="line">    ListNode *curNode = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不但pop最小堆中的数据，并将那个数据填入到新链表中</span></span><br><span class="line">    <span class="comment">//直到堆中数据为空，停止循环</span></span><br><span class="line">    <span class="keyword">while</span> (!heap.empty()) &#123;</span><br><span class="line">    	<span class="comment">//curNode始终代表了堆中最小的那个数据节点</span></span><br><span class="line">        curNode = heap.top();</span><br><span class="line">        heap.pop();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第一次循环，head指向了堆中最小的数据</span></span><br><span class="line">        <span class="keyword">if</span> (head == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            head = curNode;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果那个最小的数据所在的链表后面还有数据，那就将他后面的数据压入堆中</span></span><br><span class="line">        <span class="keyword">if</span> (curNode-&gt;next) &#123;</span><br><span class="line">            heap.push(curNode-&gt;next);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//定义前一个节点用于新链表的迭代更新，</span></span><br><span class="line">        <span class="comment">//第二次prevNode已存在，curNode（新的最小数据）会被接入到prevNode的后面，链表在不断地被填入新的数据</span></span><br><span class="line">        <span class="keyword">if</span> (prevNode) &#123;</span><br><span class="line">            prevNode-&gt;next = curNode;</span><br><span class="line">        &#125;</span><br><span class="line">        prevNode = curNode;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回我们新链表的头结点，合并K个数组工作完成</span></span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>机构：博览GeekBand<br>讲师：董飞<br>更多详细内容请认真观看教学视频:)</p>
+<ul>
+<li>第一道题 </li>
+<li>常见误区</li>
+<li>面试官视角</li>
+<li>自我反思</li>
+</ul>
+<h3 id="你需要了解的一些东西">你需要了解的一些东西</h3><ul>
+<li>浏览器：<a href="https://www.google.com/webhp?hl=zh-CN" target="_blank" rel="external">谷歌</a></li>
+<li>翻墙：<a href="https://www.google.com/search?q=%E6%80%8E%E4%B9%88%E7%BF%BB%E5%A2%99&amp;oq=%E6%80%8E%E4%B9%88%E7%BF%BB%E5%A2%99&amp;aqs=chrome..69i57j69i60l3j69i65j69i60.2444j0j4&amp;sourceid=chrome&amp;es_sm=122&amp;ie=UTF-8" target="_blank" rel="external">翻墙教程</a></li>
+<li>工具：在线文档网站<a href="http://collabedit.com/" target="_blank" rel="external">collabedit</a></li>
+</ul>
+<h2 id="第一道题">第一道题</h2><ul>
+<li>函数名：StrStr  </li>
+<li>功能：在一个已有的字符串中寻找另一个字符串，如果找到返回起始地址，否则返回-1  </li>
+<li>参考答案：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Solution&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">strStr</span><span class="params">(String source, String target)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (source == null || target == null) &#123;</span><br><span class="line">			<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">int</span> i, j;</span><br><span class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; source.length() - target.length() + <span class="number">1</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; target.length(); j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (source.charAt(i + j) != target.charAt(j)) &#123;</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (j == target.length()) &#123;</span><br><span class="line">				<span class="keyword">return</span> i;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="常见误区">常见误区</h2><h3 id="StrStr常见问题1">StrStr常见问题1</h3><ul>
+<li>装B失败</li>
+<li>某些可能是科班出身的童鞋想到了高大上的<a href="https://zh.wikipedia.org/wiki/%E5%85%8B%E5%8A%AA%E6%96%AF-%E8%8E%AB%E9%87%8C%E6%96%AF-%E6%99%AE%E6%8B%89%E7%89%B9%E7%AE%97%E6%B3%95" target="_blank" rel="external">KMP算法</a></li>
+<li>面试考察的是在有限的时间内实现题目的要求，太过复杂的算法可能让自己偷鸡不成蚀把米，也可能让某些面试官看不懂你的答案。</li>
+</ul>
+<h3 id="StrStr常见问题2">StrStr常见问题2</h3><ul>
+<li>代码风格像坨shit</li>
+<li>操作符与变量之间没有空格，for循环的分号后面也未空格，代码像黏在一起，影响阅读，一看就是新手菜鸟。</li>
+</ul>
+<h3 id="StrStr常见问题3">StrStr常见问题3</h3><ul>
+<li>未考虑数组越界情况，例如在for循环中直接使用<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; src.lenth(); i++)</span><br><span class="line">	<span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; dest.length(); j++)</span><br><span class="line">		<span class="keyword">if</span> (src.charAt(i + j) != dest.charAt(j))</span><br><span class="line">			<span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>i+j可能已经超过了src的范围；</p>
+<h3 id="StrStr常见问题4">StrStr常见问题4</h3><p>Java：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; source.length() - target.length(); i++)</span><br></pre></td></tr></table></figure></p>
+<p>循环条件中i的取值上限未+1</p>
+<p>c++：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(source) - <span class="built_in">strlen</span>(target); i++)</span><br></pre></td></tr></table></figure></p>
+<p>strlen的算法复杂度为O(n)级别，在c语言中strlen是使用指针来操作的，没有额外的空间来存储字符串数组的长度，直接使用会程序效率。可以考虑定义一个变量来存储strlen的值，然后再进行使用。</p>
+<h3 id="求职者在面试中的常见误区">求职者在面试中的常见误区</h3><ol>
+<li>认为做过的题（或者简单的题）肯定能过</li>
+<li>算法想出来了就能过</li>
+<li>代码写出来了就能过</li>
+</ol>
+<h2 id="面试官视角">面试官视角</h2><h3 id="面试官眼中的求职者：">面试官眼中的求职者：</h3><ol>
+<li>你可能是他未来的同事</li>
+<li>你的代码看起来舒服吗？<br>TA需要多少时间Review你的代码</li>
+<li>你的Coding习惯良好吗？<br>TA不想在未来老是帮你DEBUG，你自己要是经常搞出事故咋办？编码规范参考：<a href="https://github.com/google/styleguide" target="_blank" rel="external">google coding style</a>/<a href="https://github.com/zh-google-styleguide/zh-google-styleguide" target="_blank" rel="external">Google开源项目风格指南(中文版)</a></li>
+<li>你的沟通能力好吗？TA和你交流费劲吗？<br>日常会议讨论，口头沟通，文档</li>
+</ol>
+<h3 id="面试考察的编程基本功：">面试考察的编程基本功：</h3><ol>
+<li>程序风格（缩进，括号，变量名）</li>
+<li>Coding风格（异常检查，边界处理）</li>
+<li>沟通（让面试官时刻明白你的意图）</li>
+<li>测试（主动写出合理的Testcase）</li>
+</ol>
+<h2 id="自我反思">自我反思</h2><h3 id="你真的会面试吗？">你真的会面试吗？</h3><ol>
+<li>你在做题之前，先在白纸上写一遍了吗？</li>
+<li>写了200多题？你吃透了几个？</li>
+<li>题目不会做要直接说自己不会吗？</li>
+<li>是不是觉得面试官在为难你？</li>
+</ol>
+<h3 id="算法，永远的痛">算法，永远的痛</h3><ol>
+<li>题做了很多，但就是记不住解法</li>
+<li>从来就没有弄明白过动态规划是怎么回事</li>
+<li>这题好像见过，不过还是不知道怎么做</li>
+<li>leetcode，cc150都刷了，新题还是跪</li>
+</ol>
 <hr>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_3/" data-id="cieow401g000exonu1uxugzuz" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/1_1/" data-id="cieyzs5no000zionupgqatmar" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -139,10 +171,10 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
 
 
   
-    <article id="post-算法/2_2" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-笔记·杂/hexo使用心得" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/2_2/" class="article-date">
-  <time datetime="2015-09-17T07:10:39.851Z" itemprop="datePublished">2015-09-17</time>
+    <a href="/2015/09/17/笔记·杂/hexo使用心得/" class="article-date">
+  <time datetime="2015-09-16T23:57:18.928Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
   </div>
@@ -153,7 +185,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/2_2/">7. 二分搜索模板及变体（下）</a>
+      <a class="article-title" href="/2015/09/17/笔记·杂/hexo使用心得/">hexo使用心得</a>
     </h1>
   
 
@@ -161,235 +193,24 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="矩阵搜索升级版">矩阵搜索升级版</h2><p>这个代码很巧妙，相比原来的那个<a href="https://github.com/Alvin-yeats/Algorithm_GeekBand/blob/master/chapter2/2_1.md#矩阵搜索" target="_blank" rel="external">矩阵搜索</a>更像是真正意义上的二分查找，亮点就是upper值得初始化和数组下标迭代更新。</p>
-<p>实验了下发现董飞老师的示例代码是错误的，while循环内matrix下标应为“[mid/n][mid%n]”，而非“[mid%m][mid%n]”  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">searchMatrix</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Start typing your Java solution below</span></span><br><span class="line">        <span class="comment">// DO NOT write main() function</span></span><br><span class="line">        <span class="keyword">int</span> m = matrix.length;</span><br><span class="line">        <span class="keyword">int</span> n = matrix[<span class="number">0</span>].length;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (target &lt; matrix[<span class="number">0</span>][<span class="number">0</span>] || target &gt; matrix[m-<span class="number">1</span>][n-<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> lower = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> upper = m*n -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (lower &lt;= upper) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = lower + (upper-lower)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (target == matrix[mid/n][mid%n]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (target &lt; matrix[mid/n][mid%n]) &#123;</span><br><span class="line">                upper = mid-<span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                lower = mid+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Find_Peak_Element">Find Peak Element</h2><p><a href="https://leetcode.com/problems/find-peak-element/" target="_blank" rel="external">原题地址</a><br>A peak element is an element that is greater than its neighbors.<br>For example, in array [1, 2, 3, 1], 3 is a peak element and your function should return the index number 2.</p>
-<p>找到数组中的峰点，即这个数大于左右两边的数，示例代码如下。  </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// A divide and conquer solution to find a peak element element</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// A binary search based function that returns index of a peak element</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findPeakUtil</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> low, <span class="keyword">int</span> high, <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="comment">// Find index of middle element</span></span><br><span class="line">    <span class="keyword">int</span> mid = low + (high - low)/<span class="number">2</span>;  <span class="comment">/* (low + high)/2 */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compare middle element with its neighbours (if neighbours exist)</span></span><br><span class="line">    <span class="keyword">if</span> ((mid == <span class="number">0</span> || arr[mid-<span class="number">1</span>] &lt;= arr[mid]) &amp;&amp;</span><br><span class="line">            (mid == n-<span class="number">1</span> || arr[mid+<span class="number">1</span>] &lt;= arr[mid]))</span><br><span class="line">        <span class="keyword">return</span> mid;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If middle element is not peak and its left neighbor is greater than it</span></span><br><span class="line">    <span class="comment">// then left half must have a peak element</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (mid &gt; <span class="number">0</span> &amp;&amp; arr[mid-<span class="number">1</span>] &gt; arr[mid])</span><br><span class="line">        <span class="keyword">return</span> findPeakUtil(arr, low, (mid -<span class="number">1</span>), n);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If middle element is not peak and its right neighbor is greater than it</span></span><br><span class="line">    <span class="comment">// then right half must have a peak element</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> findPeakUtil(arr, (mid + <span class="number">1</span>), high, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A wrapper over recursive function findPeakUtil()</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findPeak</span><span class="params">(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> findPeakUtil(arr, <span class="number">0</span>, n-<span class="number">1</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Driver program to check above functions */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">20</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="keyword">sizeof</span>(arr)/<span class="keyword">sizeof</span>(arr[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Index of a peak point is %d"</span>, findPeak(arr, n));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-
+        <p>如果照着<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">官方文档</a>的教程来的话，hexo的安装是很简单的</p>
+<h1 id="安装">安装</h1><ul>
+<li>Windows下安装Node.js时可能会报错（错误码：2502 or 2503），<a href="http://jingyan.baidu.com/article/a501d80cec07daec630f5e18.html" target="_blank" rel="external">解决方法</a> </li>
+<li>鉴于某些原因，最好有个全局翻墙工具（推荐使用ss），这样使用npm install会快点，红杏之类的浏览器插件就算了吧。 </li>
+<li>先看官档，以官档为准，很多hexo教程写的乱七八糟的，大部分是道听途说搞来的。</li>
+</ul>
+<h1 id="使用">使用</h1><ul>
+<li>准备发表的文章可以直接丢“yourblog/source/_posts”文件夹里 </li>
+<li>执行”hexo g”命令生成静态文件失败，很可能是你的md文档里包含非法字符，比如直接使用了“{1,2,3},[1,2,3]”这种写法，默认的hexo主题不支持这种写法。实际Markdown 支持以下这些符号前面加上反斜杠来帮助插入普通的符号，加入转义符即可正常使用： </li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\   反斜线</span><br><span class="line">`   反引号</span><br><span class="line"><span class="bullet">*   </span>星号</span><br><span class="line">_   底线</span><br><span class="line">&#123;&#125;  花括号</span><br><span class="line">[]  方括号</span><br><span class="line">()  括弧</span><br><span class="line"><span class="header">#   井字号</span></span><br><span class="line"><span class="bullet">+   </span>加号</span><br><span class="line"><span class="bullet">-   </span>减号</span><br><span class="line">.   英文句点</span><br><span class="line">!   惊叹号</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_2/" data-id="cieow401g000hxonuu5q0hfcz" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/笔记·杂/hexo使用心得/" data-id="cieyzs5o40012ionuq5cr92xq" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-算法/2_1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/17/算法/2_1/" class="article-date">
-  <time datetime="2015-09-17T07:10:29.967Z" itemprop="datePublished">2015-09-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/2_1/">6. 二分搜索模板及其变体（上）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><p>我们先来看下<a href="https://zh.wikipedia.org/wiki/%E6%8A%98%E5%8D%8A%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95" target="_blank" rel="external">二分搜索维基解释</a>  </p>
-<blockquote>
-<ul>
-<li>在计算机科学中，折半搜索（英语：half-interval search），也称二分查找算法（binary search）、二分搜索法、二分搜索、二分探索，是一种在有序数组中查找某一特定元素的搜索算法。搜索过程从数组的中间元素开始，如果中间元素正好是要查找的元素，则搜索过程结束；如果某一特定元素大于或者小于中间元素，则在数组大于或小于中间元素的那一半中查找，而且跟开始一样从中间元素开始比较。如果在某一步骤数组为空，则代表找不到。这种搜索算法每一次比较都使搜索范围缩小一半。  </li>
-</ul>
-</blockquote>
-<p>我个人比较喜欢读作“二分查找”。<br>这里讲点二分查找的概念准备：<br>二分查找主要解决“在一堆数中找出指定值的位置”这类问题。<br>由此我们可以得出以下结论，要想应用二分查找，这一堆数必须满足以下特征：</p>
-<ul>
-<li>存储在数组中</li>
-<li>有序排列</li>
-</ul>
-<p>所以如果是用链表存储的，将无法应用二分查找。（有的面试官会问：二分查找用什么数据结构？数组还是链表？）<br>至于“有序排列”是递增还是递减，数组中是否存在相同元素，这些都不重要。不过一般情况，我们会希望数组是递增排列，且数组中的元素互不相同。</p>
-<h2 id="如何做二分搜索">如何做二分搜索</h2><p>如果您认真看了前言中附的二分查找基本概念，基本思路应该有了，而且我相信很多报班的小伙伴之前已经听过甚至自己实现过。<br>这里先讲个关于“二分查找”的有趣小故事  </p>
-<blockquote>
-<p>二分查找可以解决（预排序数组的查找）问题：只要数组中包含T（即要查找的值），那么通过不断缩小包含T的范围，最终就可以找到它。一开始，范围覆盖整个数组。将数组的中间项与T进行比较，可以排除一半元素，范围缩小一半。就这样反复比较，反复缩小范围，最终就会在数组中找到T，或者确定原以为T所在的范围实际为空。对于包含N个元素的表，整个查找过程大约要经过log(2)N次比较。  </p>
-<p>多数程序员都觉得只要理解了上面的描述，写出代码就不难了；但事实并非如此。如果你不认同这一点，最好的办法就是放下书本，自己动手写一写。试试吧。  </p>
-<p>我在贝尔实验室和IBM的时候都出过这道考题。那些专业的程序员有几个小时的时间，可以用他们选择的语言把上面的描述写出来；写出高级伪代码也可以。考试结束后，差不多所有程序员都认为自己写出了正确的程序。于是，我们花了半个钟头来看他们编写的代码经过测试用例验证的结果。几次课，一百多人的结果相差无几：90%的程序员写的程序中有bug（我并不认为没有bug的代码就正确）。</p>
-<p>我很惊讶：在足够的时间内，只有大约10%的专业程序员可以把这个小程序写对。但写不对这个小程序的还不止这些人：高德纳在《计算机程序设计的艺术 第3卷 排序和查找》第6.2.1节的“历史与参考文献”部分指出，虽然早在1946年就有人将二分查找的方法公诸于世，但直到1962年才有人写出没有bug的二分查找程序。</p>
-<p>——乔恩·本特利，《编程珠玑（第1版）》第35-36页。</p>
-</blockquote>
-<p>下面我们来动手写一下看看这传说中干掉90%程序员的二分查找到底如何</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//[参考鸣谢](http://blog.csdn.net/v_july_v/article/details/7093204)</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> *<span class="built_in">array</span>, <span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> value)</span>  </span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (left&lt;=right)          <span class="comment">//循环条件，适时而变  </span></span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">int</span> middle = left + (right-left)/<span class="number">2</span>;  <span class="comment">//使用“(left + right) / 2”可能会造成栈溢出  </span></span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">array</span>[middle]&gt;value)  </span><br><span class="line">        &#123;  </span><br><span class="line">            right =middle-<span class="number">1</span>;   <span class="comment">//right赋值，适时而变  </span></span><br><span class="line">        &#125;   </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">array</span>[middle]&lt;value)  </span><br><span class="line">        &#123;  </span><br><span class="line">            left=middle+<span class="number">1</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">else</span>  </span><br><span class="line">            <span class="keyword">return</span> middle;    </span><br><span class="line">        <span class="comment">//可能会有读者认为刚开始时就要判断相等，但毕竟数组中不相等的情况更多  </span></span><br><span class="line">        <span class="comment">//如果每次循环都判断一下是否相等，将耗费时间  </span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>乍看之下也就区区十来行代码，但是其中有很多要容易犯错的细节，童鞋们需要特别注意注释中提到的要点以及middle值的设定。</p>
-<h2 id="使用递归的二分搜索模板">使用递归的二分搜索模板</h2><p>简单粗暴，直接show code</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> *<span class="built_in">array</span>, <span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> value)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left &gt; right) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> mid = left + (left + right)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (arrary[mid] == value) &#123;</span><br><span class="line">        <span class="keyword">return</span> mid;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid]&gt; value) &#123;</span><br><span class="line">        <span class="keyword">return</span>    binarySearch(<span class="built_in">array</span>, left, mid -<span class="number">1</span>, value);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid]&lt; value) &#123;</span><br><span class="line">        <span class="keyword">return</span>    binarySearch(<span class="built_in">array</span>, mid+<span class="number">1</span>, right, value);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="A_generic_binary_search_template">A generic binary search template</h2><p>汗，看到这个标题以为董老师要写C++模板，结果……<br>还是我自己来吧  </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//模板源码</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">binarySearch</span><span class="params">(<span class="built_in">vector</span>&lt;T&gt; &amp;<span class="built_in">array</span>,T value)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> right = <span class="built_in">array</span>.size() -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> ( left &lt;= right )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> middle = left + ( right - left ) /<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> ( <span class="built_in">array</span>[middle] == value )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">array</span>[middle] &gt; value )</span><br><span class="line">        &#123;</span><br><span class="line">            right = middle - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> ( <span class="built_in">array</span>[middle] &lt; value )</span><br><span class="line">        &#123;</span><br><span class="line">            left = middle + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//在vs下进行简单测试，通过</span></span><br><span class="line"><span class="comment">//你可以改变数组的大小或者value的大小来进行更多的测试</span></span><br><span class="line"><span class="comment">//如有更多问题请联系我email:alvinyeats@gmail.com</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;   </span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="built_in">array</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">0</span>; i&lt;<span class="number">20</span>;i++)</span><br><span class="line">        <span class="built_in">array</span>.push_back(i);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> value = <span class="number">21</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> status = binarySearch&lt;<span class="keyword">int</span>&gt;(<span class="built_in">array</span>, value);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; status &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Search_Insert_Position">Search Insert Position</h2><p><a href="https://leetcode.com/problems/search-insert-position/" target="_blank" rel="external">leetcode原题地址</a><br>Given a sorted array and a target value, return the index<br> the target is found. If not, return the index where it would be if it were inserted in order.<br>You may assume no duplicates in the array.</p>
-<p>没啥可说的，经过上面的洗礼，做这个题应该感觉很简单  </p>
-<p>示例代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> e32`<span class="number">123451</span></span><br><span class="line"><span class="keyword">class</span> Solution &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">searchInsert</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> low = <span class="number">0</span>, high = nums.size()-<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Invariant: the desired index is between [low, high+1]</span></span><br><span class="line">        <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = low + (high-low)/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (nums[mid] &lt; target)</span><br><span class="line">                low = mid+<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                high = mid-<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// (1) At this point, low &gt; high. That is, low &gt;= high+1</span></span><br><span class="line">        <span class="comment">// (2) From the invariant, we know that the index is between [low, high+1], so low &lt;= high+1. Follwing from (1), now we know low == high+1.</span></span><br><span class="line">        <span class="comment">// (3) Following from (2), the index is between [low, high+1] = [low, low], which means that low is the desired index</span></span><br><span class="line">        <span class="comment">//     Therefore, we return low as the answer. You can also return high+1 as the result, since low == high+1</span></span><br><span class="line">        <span class="keyword">return</span> low;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="Search_in_Rotated_Sorted_Array">Search in Rotated Sorted Array</h2><p>在轮转后的有序数组上应用二分查找<br><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/" target="_blank" rel="external">leetcode原题地址</a><br>Suppose a sorted array is rotated at some pivot unknown to you beforehand.</p>
-<p>(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).</p>
-<p>You are given a target value to search. If found in the array return its index, otherwise return -1.</p>
-<p>You may assume no duplicate exists in the array.</p>
-<p>该题要注意的地方是：判断给定值到底属于前面的区间{4,5,6,7}还是后面的区间{0,1,2}<br>这种数组并不是严格的递增排列，所以我们先比较M与L(也可以比较M与R，道理是一样的)，然后相对应的来判断要查找的key值是否位于[L,M]区间，或是[M,R]区间，从而确定下一步究竟是减小R还是增大M</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rotated_binary_search</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> N, <span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> L = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> R = N - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (L &lt;= R) &#123;</span><br><span class="line">    <span class="comment">// Avoid overflow, same as M=(L+R)/2</span></span><br><span class="line">    <span class="keyword">int</span> M = L + ((R - L) &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (A[M] == key) <span class="keyword">return</span> M;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// the bottom half is sorted</span></span><br><span class="line">    <span class="keyword">if</span> (A[L] &lt;= A[M]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[L] &lt;= key &amp;&amp; key &lt; A[M])</span><br><span class="line">            R = M - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            L = M + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// the upper half is sorted</span></span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[M] &lt; key &amp;&amp; key &lt;= A[R])</span><br><span class="line">            L = M + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            R = M - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>扩展：<a href="https://leetcode.com/problems/search-in-rotated-sorted-array-ii/" target="_blank" rel="external">Search in Rotated Sorted Array II</a><br>有兴趣的童鞋可以试下。</p>
-<h2 id="Find_the_Square_Root">Find the Square Root</h2><p>利用二分法找到一个数的平方根。<br>董老师的例程就很不错，我就不自己写了</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//函数功能</span></span><br><span class="line"><span class="comment">//输入：待求平方根的数n</span></span><br><span class="line"><span class="comment">//输出：误差允许范围内n的平方根</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">squareRoot</span><span class="params">(<span class="keyword">float</span> n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> x = n;</span><br><span class="line">    <span class="keyword">float</span> y = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">float</span> e = <span class="number">0.000001</span>;  <span class="comment">//e decides the accuracy level</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(x - y &gt; e)</span><br><span class="line">    &#123;</span><br><span class="line">        x = (x + y)/<span class="number">2</span>;</span><br><span class="line">        y = n/x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="矩阵搜索">矩阵搜索</h2><p>题目描述：Check if an element is in a M*N matrix, each row and column of which is sorted.</p>
-<p>有题目可知，这个矩阵的每行每列都是排好序的，也就是说每行每列是递增（或递减，请自行分析）的。<br>我们简单构造这样一个矩阵：<br>1   5   10   20<br>2   6   11   30<br>7   9   12   40<br>8   15  31   41  </p>
-<p>利用这个矩阵的特性我们可以运用二分查找的思想来简化这个问题<br>解决方法：不用递归，从矩阵的右上角(x,y)开始search（这样有一个好处：(x,y)的左侧所有点都小于matrxi[x][y], （x,y）的下侧所有点都大于matrix[x][y]），在每个点都做这样的判断：<br>示例代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isElementInMatrix</span><span class="params">(<span class="keyword">int</span> **matrix, <span class="keyword">int</span> M, <span class="keyword">int</span> N, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> row = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> column = N - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (row &lt; M &amp;&amp; column &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (matrix[row][column] == target) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (matrix[row][column] &lt; target) &#123;</span><br><span class="line">            row++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            column--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Range_Search">Range Search</h2><p>Given a sorted array of intergers with duplicates.Implement a function to get the start and end position of a given value.</p>
-<p>有时我们并不是要寻找目标值，而是寻找到“刚刚”大于给定值的值或者“刚刚”小于给定值的值。<br>用数学方式描述就是：在原集合中寻找包含目标值区间的最小子集</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">searchRangeHelper</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> left, <span class="keyword">int</span> right, <span class="keyword">int</span> target, <span class="keyword">int</span> &amp;begin, <span class="keyword">int</span> &amp;end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left &gt; right) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> mid = right - (right - left) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">array</span>[mid] == target) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mid &lt; begin || begin == -<span class="number">1</span>) &#123;</span><br><span class="line">            begin = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (mid &gt; end) &#123;</span><br><span class="line">            end = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        searchRangeHelper(<span class="built_in">array</span>, left, mid - <span class="number">1</span>, target, begin, end);</span><br><span class="line">        searchRangeHelper(<span class="built_in">array</span>, mid + <span class="number">1</span>, right, target, begin, end);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">array</span>[mid] &lt; target) &#123;</span><br><span class="line">        searchRangeHelper(<span class="built_in">array</span>, mid + <span class="number">1</span>, right, target, begin, end);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        searchRangeHelper(<span class="built_in">array</span>, left, mid - <span class="number">1</span>, target, begin, end);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; searchRange(<span class="keyword">int</span> A[], <span class="keyword">int</span> n, <span class="keyword">int</span> target) &#123;</span><br><span class="line">    <span class="keyword">int</span> begin = -<span class="number">1</span>, end = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    searchRangeHelper(A, <span class="number">0</span>, n - <span class="number">1</span>, target, begin, end);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line">    ans.push_back(begin);</span><br><span class="line">    ans.push_back(end);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_1/" data-id="cieow401g000kxonuj2e37d79" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-算法/1_5" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/17/算法/1_5/" class="article-date">
-  <time datetime="2015-09-17T07:10:13.630Z" itemprop="datePublished">2015-09-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/1_5/">5. 链表常见操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>推荐大家看下<a href="http://book.douban.com/subject/3004255/" target="_blank" rel="external">《编程之美》</a>、<a href="http://book.douban.com/subject/25753386/" target="_blank" rel="external">《程序员面试金典》</a><br>还有编程相关网站：<a href="https://leetcode.com/problemset/algorithms/" target="_blank" rel="external">leetcode</a><br>老师讲的很多题其实就是这些书和网站的题</p>
-<h2 id="单链表是否存在环？环的入口是什么？">单链表是否存在环？环的入口是什么？</h2><h3 id="是否存在环">是否存在环</h3><p>1) 判断是否存在环：设置快慢指针fast和slow，fast步速为2，slow为1，若最终fast==slow，那么就证明单链表中一定有环。如果没有环的话，fast一定先到达尾节点</p>
-<p>2) 简单证明：利用相对运动的概念，以slow为参考点（静止不动），那么fast的步速实际为1，当fast超过slow之后，fast以每步一个节点的速度追赶slow，如果链表有环的话，fast一定会追赶到slow，即fast==slow。</p>
-<h3 id="如何找到环的入口">如何找到环的入口</h3><p><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1eurmxod4q0j20eq09tjs5.jpg" alt="第一次相遇"></p>
-<p>字母代表的量：  </p>
-<ul>
-<li>a：链表头结点到环入口的距离  </li>
-<li>r：环长</li>
-<li>蓝色线：fast指针所走的距离2s  </li>
-<li>黑色线：slow指针所走的距离s</li>
-</ul>
-<p>假设链表总长度为L，且fast与slow相遇时fast已经绕环走了n圈，则有如下关系：</p>
-<p>2s = s + n<em>r<br>将s移到左边得：<br>s = n</em>r<br>转换：<br>s = (n-1)<em>r + r = (n-1)</em>r + L-a<br>a+x = (n-1)<em>r + L-a<br>得：<br>a = (n-1)</em>r + L-a-x</p>
-<p>由图可知，（L-a-x）为相遇点到环入口点的距离。由上式可知：<br>从链表头到环入口的距离 = （n-1）圈内环循环 + 相遇点到环入口点的距离<br>将r视为周期的话，a与L-a-x在某种意义上是相等的（实际并不一定相等）。<br>那么由此我们便找到了突破点，为了找到环的入口点，在fast与slow相遇时，将slow指针重新指向单链表的头节点，fast仍然留在相遇点，只不过步速降为与slow相同的1，每次循环只经过一个节点，如此，当fast与slow再次相遇时，那个新的相遇点便是我们苦苦寻找的入口点了。</p>
-<h3 id="如何知道环的长度">如何知道环的长度</h3><p>纪录下相遇点，让slow与fast从该点开始，再次碰撞所走过的操作数就是环的长度r。  </p>
-<h3 id="带环的链表的长度是多少？">带环的链表的长度是多少？</h3><p>通过以上分析我们已经知道了如何求环入口，环长，那么链表长度显然就是两者之和，即：<br>L = a + r</p>
-<h2 id="判断两个链表是否相交">判断两个链表是否相交</h2><p>分析问题之前我们要搞清楚链表相交的一些基本概念  </p>
-<ul>
-<li>明确概念：两个单向链表相交，只能是y型相交，不可能是x型相交。  </li>
-<li>分析：有两个链表，La,Lb,设他们的交点设为p，假设在La中，p的前驱为pre_a，后继为next_a,在Lb中，前驱为pre_b,后继为next_b，则<br>pre_a-&gt;next=p,pre_b-&gt;next=p,接下来看后继,p-&gt;next=next_a,p-&gt;next=next_b；那么问题就出来了，一个单链表的next指针只有一个，<br>怎么跑出两个来呢，所以必有next_a==next_b，于是我们得出两个链表相交只能是Y型相交。明确了这个概念，我们再来堆相交问题进行分析。</li>
-</ul>
-<h3 id="情况一：两个链表都无环">情况一：两个链表都无环</h3><p>1) 问题简化。将链表B接到链表A的后面，如果A、B有交点，则构成一个有环的单链表，而我们刚刚在上面已经讨论了如何判断一个<br>单链表是否有环。<br>2) 若两个链表相交则必为Y型，由此可知两个链表从相交点到尾节点是相同的，我们并不知道他们的相交点位置，但是我们可以遍历得出A、B链表的<br>尾节点，如此，比较他们的尾节点是否相等便可以求证A、B是否相交了。</p>
-<h3 id="情况二：链表有环">情况二：链表有环</h3><p>1) 其中一个链表有环，另外一个链表无环。则两个链表不可能相交。（啥？你不知道为啥？自己看看前面的“明确概念”反省吧）</p>
-<p>2) 那么有环相交的情况只有当两个链表都有环时才会出现，如果两个有环链表相交，则他们拥有共通的环，即环上任意一个节点都存在于<br>两个链表上。因此，通过判断A链表上的快慢指针相遇点是否也在B链表上便可以得出两个链表是否相交了。</p>
-<h2 id="求相交链表的相交点">求相交链表的相交点</h2><p>题目描述：如果两个无环单向链表相交，怎么求出他们相交的第一个节点呢？</p>
-<p>分析：采用对齐的思想。计算两个链表的长度 L1 , L2，分别用两个指针 p1 , p2 指向两个链表的头，然后将较长链表的 p1（假设为 p1）向后移动L2 - L1个节点，然后再同时向后移动p1 , p2，直到 p1 = p2。相遇的点就是相交的第一个节点。</p>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/1_5/" data-id="cieow401g000nxonubyruyx00" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-算法/1_3" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/17/算法/1_3/" class="article-date">
-  <time datetime="2015-09-17T07:09:49.255Z" itemprop="datePublished">2015-09-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/1_3/">3. 工具和经验谈</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="工具介绍">工具介绍</h2><ul>
-<li><a href="https://windows.github.com/" target="_blank" rel="external">GitHub for Windows</a>,<a href="https://mac.github.com/" target="_blank" rel="external">GitHub for Mac</a>社区版的git，拥有全球最大的同性交友平台的美称</li>
-<li><a href="https://git-scm.com/downloads" target="_blank" rel="external">git</a>分布式版本控制和软件配置管理软件</li>
-<li><a href="http://www.sublimetext.com/" target="_blank" rel="external">Sublime</a>功能强大颜值超高的编辑器，谁用谁知道</li>
-<li><a href="https://en.wikipedia.org/wiki/Computer_terminal" target="_blank" rel="external">Terminal</a>终端机，程序员应该都懂得，学习下怎么用快捷键打开你电脑上的终端吧</li>
-<li>g++：先在这玩意儿很多Linux都带的有，如果没有你就在终端敲入“apt-get install g++”，Window下推荐使用<a href="https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx" target="_blank" rel="external">Visual Stadio</a>，实在想用g++可以下个<a href="http://sourceforge.net/projects/mingw-w64/?source=recommended" target="_blank" rel="external">MinGW for Windows</a>玩玩</li>
-<li><a href="http://mooc.study.163.com/learn/ZJU-1000002014?tid=1000002010#/learn/content?type=detail&amp;id=1000013004&amp;cid=1000013008" target="_blank" rel="external">Java</a>安装，我认为网易云课堂Java老师翁凯讲的就特别好，前段时间同学还跟我说装java老是失败……然后我就说你可以去看看翁凯老师讲的安装java的教程，过来人表示，选错教程真心害死人</li>
-</ul>
-<h2 id="常见问题">常见问题</h2><p>没带耳机，戴耳机了再详细填坑</p>
-<ul>
-<li>应届生招聘VS非应届生招聘</li>
-<li>准备时间少？基础少？怎么刷题更高效？</li>
-<li>转行找CS怎么准备？</li>
-<li>面试的时候怎么表现自己（or 怎么沟通）</li>
-<li>动态规划完全不懂怎么办？</li>
-<li>面试写出了BUG怎么办？</li>
-</ul>
-<h2 id="推荐书籍">推荐书籍</h2><ul>
-<li><a href="http://book.douban.com/subject/3072383/" target="_blank" rel="external">The Algorithm Design Manual</a>,<a href="http://www3.cs.stonybrook.edu/~algorith/video-lectures/" target="_blank" rel="external">作者的上课视频</a></li>
-<li>大部头<a href="http://book.douban.com/subject/3904676/" target="_blank" rel="external">Introduction to Algorithm</a>,<a href="http://book.douban.com/subject/1418402/" target="_blank" rel="external">TAOCP</a></li>
-<li><a href="http://book.douban.com/subject/10436668/" target="_blank" rel="external">Cracking The Coding Interview</a>屌爆侠CTCI（又称CC150）写的书，准备北美面试的同学必看</li>
-<li><a href="http://book.douban.com/subject/6966465/" target="_blank" rel="external">剑指Offer</a>，适合国内找工作</li>
-<li><a href="http://www.amazon.cn/%E8%BF%9B%E5%86%9B%E7%A1%85%E8%B0%B7-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9D%A2%E8%AF%95%E6%8F%AD%E7%A7%98-%E9%99%88%E4%B8%9C%E9%94%8B/dp/B00IXBJXGA/ref=sr_1_1?ie=UTF8&amp;qid=1438824440&amp;sr=8-1&amp;keywords=%E8%BF%9B%E5%86%9B%E7%A1%85%E8%B0%B7-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9D%A2%E8%AF%95%E6%8F%AD%E7%A7%98" target="_blank" rel="external">进军硅谷-程序员面试揭秘</a>，有差不多150题，大部分是leetcode上的</li>
-</ul>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/1_3/" data-id="cieow401v000txonuz19hqrmc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
 
     </footer>
   </div>
@@ -400,7 +221,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
     </nav>
   
 </section>
@@ -413,7 +234,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
     </div>
   </div>
 
@@ -422,7 +243,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/环境配置/" style="font-size: 10px;">环境配置</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
     </div>
   </div>
 
@@ -443,7 +264,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       <ul>
         
           <li>
-            <a href="/2015/09/25/Java/javaconfiger/">(no title)</a>
+            <a href="/2015/09/25/Java/javaconfiger/">Windows下Java工作环境配置</a>
           </li>
         
           <li>
