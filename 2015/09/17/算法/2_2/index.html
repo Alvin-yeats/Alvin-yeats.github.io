@@ -94,6 +94,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+        
         <h2 id="矩阵搜索升级版">矩阵搜索升级版</h2><p>这个代码很巧妙，相比原来的那个<a href="https://github.com/Alvin-yeats/Algorithm_GeekBand/blob/master/chapter2/2_1.md#矩阵搜索" target="_blank" rel="external">矩阵搜索</a>更像是真正意义上的二分查找，亮点就是upper值得初始化和数组下标迭代更新。</p>
 <p>实验了下发现董飞老师的示例代码是错误的，while循环内matrix下标应为“[mid/n][mid%n]”，而非“[mid%m][mid%n]”  </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">searchMatrix</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Start typing your Java solution below</span></span><br><span class="line">        <span class="comment">// DO NOT write main() function</span></span><br><span class="line">        <span class="keyword">int</span> m = matrix.length;</span><br><span class="line">        <span class="keyword">int</span> n = matrix[<span class="number">0</span>].length;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (target &lt; matrix[<span class="number">0</span>][<span class="number">0</span>] || target &gt; matrix[m-<span class="number">1</span>][n-<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> lower = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> upper = m*n -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (lower &lt;= upper) &#123;</span><br><span class="line">            <span class="keyword">int</span> mid = lower + (upper-lower)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (target == matrix[mid/n][mid%n]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (target &lt; matrix[mid/n][mid%n]) &#123;</span><br><span class="line">                upper = mid-<span class="number">1</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                lower = mid+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -164,7 +165,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">13</span></li></ul>
     </div>
   </div>
 
@@ -174,6 +175,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/10/20/算法/1_1/">1. 从第一道面试题谈起</a>
+          </li>
         
           <li>
             <a href="/2015/09/25/Java/javaconfiger/">Windows下Java工作环境配置</a>
@@ -189,10 +194,6 @@
         
           <li>
             <a href="/2015/09/17/算法/3_1/">10. 二叉树简介及先序、中序、后序</a>
-          </li>
-        
-          <li>
-            <a href="/2015/09/17/算法/2_4/">9. 二分搜索扩展题型</a>
           </li>
         
       </ul>

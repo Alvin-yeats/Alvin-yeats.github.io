@@ -95,6 +95,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+        
         <h2 id="Binary_Tree_BFS_Traversal">Binary Tree BFS Traversal</h2><p>二叉树层次遍历</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//刚开始没看懂，自己画图细看几遍发生特别精妙，赞一个</span></span><br><span class="line"><span class="comment">//一定要记住队列是先进先出的</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">levelTraversal</span><span class="params">(TreeNode *root)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">queue</span>&lt;TreeNode *&gt; nodeQueue;</span><br><span class="line">    TreeNode *currentNode;</span><br><span class="line">    <span class="keyword">if</span> (!root) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//先塞入根节点</span></span><br><span class="line">    nodeQueue.push(root);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!nodeQueue.empty()) &#123;</span><br><span class="line"></span><br><span class="line">    	<span class="comment">//当前节点值为queue中的第一个数据。</span></span><br><span class="line">        currentNode = nodeQueue.front();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//做进一步的处理，比如需要打印</span></span><br><span class="line">        processNode(currentNode);</span><br><span class="line">        <span class="keyword">if</span> (currentNode-&gt;left) &#123;</span><br><span class="line">            nodeQueue.push(currentNode-&gt;left);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (currentNode-&gt;right) &#123;</span><br><span class="line">            nodeQueue.push(currentNode-&gt;right);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//弹出当前的数据</span></span><br><span class="line">        nodeQueue.pop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Binary_Tree_to_Linked_Lists">Binary Tree to Linked Lists</h2><p>Covert a binary tree to linked lists. Each linked list is correspondent to all the nodes at the same level.</p>
@@ -202,7 +203,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">13</span></li></ul>
     </div>
   </div>
 
@@ -212,6 +213,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/10/20/算法/1_1/">1. 从第一道面试题谈起</a>
+          </li>
         
           <li>
             <a href="/2015/09/25/Java/javaconfiger/">Windows下Java工作环境配置</a>
@@ -227,10 +232,6 @@
         
           <li>
             <a href="/2015/09/17/算法/3_1/">10. 二叉树简介及先序、中序、后序</a>
-          </li>
-        
-          <li>
-            <a href="/2015/09/17/算法/2_4/">9. 二分搜索扩展题型</a>
           </li>
         
       </ul>
