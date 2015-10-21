@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>8. 排序数组常见算法 | Alvin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前几个题比较简单，最后一个合并K个有序数组，不熟悉STL模板的童鞋可能会抓狂，不要紧，我已经添加了详细的注释，只要认真看下去认真思考，相信你可以的！
+Remove Duplicates from Sorted Array I,II对有序数组去重  
+每个元素只能出现一次Remove Duplicates from Sorted Array I  
+问题描述：给你一个排好序的数组，去掉重复的元素保证">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8. 排序数组常见算法">
+<meta property="og:url" content="www.wyiren.com/2015/09/17/Algorithm/2_3/index.html">
+<meta property="og:site_name" content="Alvin's Blog">
+<meta property="og:description" content="前几个题比较简单，最后一个合并K个有序数组，不熟悉STL模板的童鞋可能会抓狂，不要紧，我已经添加了详细的注释，只要认真看下去认真思考，相信你可以的！
+Remove Duplicates from Sorted Array I,II对有序数组去重  
+每个元素只能出现一次Remove Duplicates from Sorted Array I  
+问题描述：给你一个排好序的数组，去掉重复的元素保证">
+<meta property="og:updated_time" content="2015-09-17T07:10:46.347Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8. 排序数组常见算法">
+<meta name="twitter:description" content="前几个题比较简单，最后一个合并K个有序数组，不熟悉STL模板的童鞋可能会抓狂，不要紧，我已经添加了详细的注释，只要认真看下去认真思考，相信你可以的！
+Remove Duplicates from Sorted Array I,II对有序数组去重  
+每个元素只能出现一次Remove Duplicates from Sorted Array I  
+问题描述：给你一个排好序的数组，去掉重复的元素保证">
+  
+    <link rel="alternative" href="/atom.xml" title="Alvin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Alvin&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Those that can，do. Those that can’t，complain.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="www.wyiren.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Algorithm/2_3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/17/Algorithm/2_3/" class="article-date">
+  <time datetime="2015-09-17T07:10:46.347Z" itemprop="datePublished">2015-09-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      8. 排序数组常见算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>前几个题比较简单，最后一个合并K个有序数组，不熟悉STL模板的童鞋可能会抓狂，不要紧，我已经添加了详细的注释，只要认真看下去认真思考，相信你可以的！</p>
+<h2 id="Remove_Duplicates_from_Sorted_Array_I,II">Remove Duplicates from Sorted Array I,II</h2><p>对有序数组去重  </p>
+<h3 id="每个元素只能出现一次">每个元素只能出现一次</h3><p><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank" rel="external">Remove Duplicates from Sorted Array I</a>  </p>
+<p>问题描述：给你一个排好序的数组，去掉重复的元素保证每个元素只出现一次。不允许使用另外一个数组来提供额外的空间，你必须在原数组中进行这个工作。</p>
+<p>解题思路：董老师这里运用了fast,low两个值，只有当下一个元素与上一个唯一元素不重复时slow才加1，slow实际存储的去重后新数组的长度，而fast是用来遍历数组的，当fast超过数组的size时，即意味着遍历结束，我们的去重工作完成。由于原题要求不允许使用额外的空间，所以下面的解法是直接对已重复的元素所在地址进行覆盖，后面的会被直接移到前面。</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span><br><span class="line">Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.</span><br><span class="line">Do not allocate extra space for another array, you must do this in place with constant memory.</span><br><span class="line">For example,</span><br><span class="line">Given input array A = [1,1,2],</span><br><span class="line">Your function should return length = 2, and A is now [1,2].</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="keyword">int</span>[] A)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> size = A.length;</span><br><span class="line">        <span class="keyword">if</span> (size &lt;= <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> fast = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> slow = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ( fast &lt; size) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[slow] != A[fast]) &#123;</span><br><span class="line">                A[slow+<span class="number">1</span>] = A[fast];</span><br><span class="line">                slow++;</span><br><span class="line">            &#125;</span><br><span class="line">            fast++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="如果我们允许每个元素可以出现至少两次呢？">如果我们允许每个元素可以出现至少两次呢？</h3><p><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/" target="_blank" rel="external">Remove Duplicates from Sorted Array II</a></p>
+<p>很简单，我们加个标志位来记录元素的重复次数就好了，当重复次数超过两次时我们再进行去重处理。</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span><br><span class="line">Follow up for "Remove Duplicates":</span><br><span class="line">What if duplicates are allowed at most twice?</span><br><span class="line">For example,</span><br><span class="line">Given sorted array A = [1,1,1,2,2,3],</span><br><span class="line">Your function should return length = 5, and A is now [1,1,2,2,3].</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="keyword">int</span>[] A)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Start typing your Java solution below</span></span><br><span class="line">        <span class="comment">// DO NOT write main() function</span></span><br><span class="line">        <span class="keyword">int</span> size = A.length;</span><br><span class="line">        <span class="keyword">if</span> (size &lt;= <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> size;</span><br><span class="line">        <span class="keyword">int</span> fast = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> slow = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dup = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ( fast &lt; size) &#123;</span><br><span class="line">            <span class="keyword">if</span> (A[slow] != A[fast]) &#123;</span><br><span class="line">                A[slow+<span class="number">1</span>] = A[fast];</span><br><span class="line">                slow++;</span><br><span class="line">                dup = <span class="number">0</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">                dup++;</span><br><span class="line">                <span class="keyword">if</span> (dup &lt; <span class="number">2</span>) &#123;</span><br><span class="line">                    A[slow+<span class="number">1</span>] = A[fast];</span><br><span class="line">                    slow++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            fast++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> slow+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Intersection_of_2_sorted_array">Intersection of 2 sorted array</h2><p>在有序数组中找交集：   </p>
+<pre><code>array1:[<span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">6</span>]  
+array2:[<span class="number">3</span> <span class="number">6</span> <span class="number">9</span> <span class="number">10</span>]  
+
+<span class="keyword">return</span> [<span class="number">3</span>,<span class="number">6</span>]
+</code></pre><p>解题思路：遍历比较A、B两数组中的元素，如果出现相等的元素便将该值加入到新的数组中。无疑，用vector这种动态容器来充当新数组是最好的。</p>
+<p>示例代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; findIntersection(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; A, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; B) &#123;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; intersection;</span><br><span class="line">  <span class="keyword">int</span> n1 = A.size();</span><br><span class="line">  <span class="keyword">int</span> n2 = B.size();</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A[i] &gt; B[j]) &#123;</span><br><span class="line">          j++;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (B[j] &gt; A[i]) &#123;</span><br><span class="line">          i++;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          intersection.push_back(A[i]);</span><br><span class="line">          i++;</span><br><span class="line">          j++;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> intersection;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Merge_Sorted_Array">Merge Sorted Array</h2><p>合并有序数组</p>
+<p>1.Merge Two Sorted Array into a new Array<br>2.Merge Two Sorted Array A and B into A, assume A has enough space.</p>
+<p>解题思路：董老师的程序是将组合后的新元素塞到了数组B里面。大致思路就是我们要想让B成为合并后的新数组，就必须确保B多余的空间大于等于A数组的长度，所以下面代码给A定了n的长度，而B为2*n。B从第n位开始都初始化为0，意味着后面是可以用来被重新赋值覆盖的。在填充新的数组B的时候，为了不将前面的元素覆盖，我们从后往前填充数组。</p>
+<p>示例代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Set A[n] = &#123;<span class="number">2</span>, <span class="number">11</span>, <span class="number">54</span>, <span class="number">87</span>, <span class="number">99</span>&#125;</span><br><span class="line">Set B[<span class="number">2</span>*n] = = &#123;<span class="number">4</span>, <span class="number">9</span>, <span class="number">34</span>, <span class="number">67</span>, <span class="number">98</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Merge</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> B[], <span class="keyword">int</span> size_b,  <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    indexA=n -<span class="number">1</span>;</span><br><span class="line">    indexB=n -<span class="number">1</span>;</span><br><span class="line">    index_new=<span class="number">2</span>n -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (index_new &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[indexA] &lt; B[indexB]) &#123;</span><br><span class="line">            B[index_new] = B[indexB];</span><br><span class="line">            indexB--;</span><br><span class="line">            index_new--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            B[index_new] = A[indexA];</span><br><span class="line">            indexA--;</span><br><span class="line">            index_new--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Optimization if A or B can be directly copied</span></span><br><span class="line">        <span class="comment">//如果B原有的元素为空，那么直接像B中填充即可</span></span><br><span class="line">        <span class="keyword">if</span> (indexB == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">while</span>(index_new &gt;= <span class="number">0</span>)</span><br><span class="line">                B[index_new--] = A[indexA--];</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果A为空，那没必要合并了</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (indexA == -<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Merge_K_Sorted_List">Merge K Sorted List</h2><p>Merge k sorted linked lists to be one sorted list.</p>
+<p>在该题中，董老师用到了<a href="http://www.cplusplus.com/reference/queue/priority_queue/" target="_blank" rel="external">优先队列</a>，这里我简单介绍下它的概念。</p>
+<p>priority_queue的模板声明带有三个参数:<br>priority_queue<type, container,="" functional=""><br>其中Type 为数据类型， Container 为保存数据的容器，Functional 为元素比较方式。<br>Container必须是用数组实现的容器，比如 vector, deque 但不能用 list.<br>STL里面默认用的是 vector. 比较方式默认用 operator&lt; , 所以如果你把后面俩个参数缺省的话，优先队列就是大顶堆，队头元素最大。</type,></p>
+<p>优先队列中元素出队列的顺序由元素的优先级决定，而不是元素进入队列的次序 ，</p>
+<p>例如：我们常用的操作就是对数据排序，优先队列默认的是数据大的优先级高，所以我们无论按照什么顺序push一堆数，最终在队列里总是top出最大的元素。</p>
+<p>这里需要重点说明的是当你使用priority_queue来push数据的时候，你录入的数据并不会进行排序，只有当你pop数据的时候，priority_queue才会根据Functional规定的数据优先级来弹出优先级最高的那个数据。</p>
+<p>解题思路：利用<a href="https://zh.wikipedia.org/wiki/%E6%9C%80%E5%A4%A7%E2%80%94%E6%9C%80%E5%B0%8F%E5%A0%86" target="_blank" rel="external">最小堆</a>这种数据结构，我们首先把k个链表的首元素都加入最小堆中，它们会自动排好序。然后我们每次取出最小的那个元素加入我们最终结果的链表中，然后把刚刚被取出元素的那个链表的下一个元素再加入堆中，下次仍从堆中取出最小的元素做相同的操作，以此类推，直到堆中没有元素了，此时k个链表也合并为了一个链表，返回首节点即可，注意head(存储最终结果的链表头)跟heap(最小堆)不要混淆。</p>
+<p>示例代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">struct</span> ListNode &#123;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    ListNode *next;</span><br><span class="line">    ListNode(<span class="keyword">int</span> x) : val(x), next(<span class="literal">NULL</span>) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//重载操作符，定义优先级为数据越小优先级越大</span></span><br><span class="line"><span class="keyword">struct</span> cmp &#123;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> ListNode *a, <span class="keyword">const</span> ListNode *b)</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (a-&gt;val &lt; b-&gt;val)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">ListNode *<span class="title">mergeKLists</span><span class="params">(<span class="built_in">vector</span>&lt;ListNode *&gt; &amp;lists)</span> </span>&#123;</span><br><span class="line">    priority_queue&lt;ListNode *, <span class="built_in">vector</span>&lt;ListNode *&gt;, cmp&gt; heap;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将每个链表中的头结点（即每个数组开头最小的值）压入堆中</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; lists.size(); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (lists[i]) &#123;</span><br><span class="line">            <span class="comment">// for the corner case: [&#123;&#125;]</span></span><br><span class="line">            heap.push(lists[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ListNode *prevNode = <span class="literal">NULL</span>;</span><br><span class="line">    ListNode *head = <span class="literal">NULL</span>;</span><br><span class="line">    ListNode *curNode = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不但pop最小堆中的数据，并将那个数据填入到新链表中</span></span><br><span class="line">    <span class="comment">//直到堆中数据为空，停止循环</span></span><br><span class="line">    <span class="keyword">while</span> (!heap.empty()) &#123;</span><br><span class="line">    	<span class="comment">//curNode始终代表了堆中最小的那个数据节点</span></span><br><span class="line">        curNode = heap.top();</span><br><span class="line">        heap.pop();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第一次循环，head指向了堆中最小的数据</span></span><br><span class="line">        <span class="keyword">if</span> (head == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            head = curNode;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果那个最小的数据所在的链表后面还有数据，那就将他后面的数据压入堆中</span></span><br><span class="line">        <span class="keyword">if</span> (curNode-&gt;next) &#123;</span><br><span class="line">            heap.push(curNode-&gt;next);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//定义前一个节点用于新链表的迭代更新，</span></span><br><span class="line">        <span class="comment">//第二次prevNode已存在，curNode（新的最小数据）会被接入到prevNode的后面，链表在不断地被填入新的数据</span></span><br><span class="line">        <span class="keyword">if</span> (prevNode) &#123;</span><br><span class="line">            prevNode-&gt;next = curNode;</span><br><span class="line">        &#125;</span><br><span class="line">        prevNode = curNode;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回我们新链表的头结点，合并K个数组工作完成</span></span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/2_3/" data-id="cig05bpzv000t8onuoqx5hu29" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/17/Algorithm/2_4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          9. 二分搜索扩展题型
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/09/17/Algorithm/2_2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">7. 二分搜索模板及变体（下）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/收录/">收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/收录/" style="font-size: 13.33px;">收录</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/环境配置/" style="font-size: 10px;">环境配置</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/10/21/freeNote/hexo-font-configure/">（收录）Hexo Landscape主题的字体和JS库优化</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/21/freeNote/hexo-add-contents/">（收录）为Hexo博客添加目录</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/21/Java/javaconfigure/">Windows下Java工作环境配置</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/21/freeNote/hexo-knowledge/">hexo使用心得</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/20/Algorithm/1_1/">1. 从第一道面试题谈起</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Alvin Yeats<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof jQuery == 'undefined') {
+  document.write(unescape("%3Cscript src='/js/jquery-2.0.3.min.js' type='text/javascript'%3E%3C/script%3E"));
+}
+// ]]>
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

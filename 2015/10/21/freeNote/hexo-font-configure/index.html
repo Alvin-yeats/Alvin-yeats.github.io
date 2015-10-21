@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>（收录）Hexo Landscape主题的字体和JS库优化 | Alvin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="博文原地址：The Bloom of Youth | 锦瑟华年
+Hexo博客系统的作者来自台湾，因此在这个系统中也使用了一些不符合大陆实际情况的服务，除了留言板、分享按钮等无关大雅的东西之外，直接影响网站打开速度和呈现效果的东西就是来自Google的字体和JavaScript库了，由于Google在大陆基本处于被阻断的状态，所以我们有必要对其中涉及Google服务的地方进行替换。另外，如果使用Wi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="（收录）Hexo Landscape主题的字体和JS库优化">
+<meta property="og:url" content="www.wyiren.com/2015/10/21/freeNote/hexo-font-configure/index.html">
+<meta property="og:site_name" content="Alvin's Blog">
+<meta property="og:description" content="博文原地址：The Bloom of Youth | 锦瑟华年
+Hexo博客系统的作者来自台湾，因此在这个系统中也使用了一些不符合大陆实际情况的服务，除了留言板、分享按钮等无关大雅的东西之外，直接影响网站打开速度和呈现效果的东西就是来自Google的字体和JavaScript库了，由于Google在大陆基本处于被阻断的状态，所以我们有必要对其中涉及Google服务的地方进行替换。另外，如果使用Wi">
+<meta property="og:updated_time" content="2015-10-21T01:53:10.365Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="（收录）Hexo Landscape主题的字体和JS库优化">
+<meta name="twitter:description" content="博文原地址：The Bloom of Youth | 锦瑟华年
+Hexo博客系统的作者来自台湾，因此在这个系统中也使用了一些不符合大陆实际情况的服务，除了留言板、分享按钮等无关大雅的东西之外，直接影响网站打开速度和呈现效果的东西就是来自Google的字体和JavaScript库了，由于Google在大陆基本处于被阻断的状态，所以我们有必要对其中涉及Google服务的地方进行替换。另外，如果使用Wi">
+  
+    <link rel="alternative" href="/atom.xml" title="Alvin&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Alvin&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Those that can，do. Those that can’t，complain.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="www.wyiren.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-freeNote/hexo-font-configure" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/21/freeNote/hexo-font-configure/" class="article-date">
+  <time datetime="2015-10-21T01:53:10.365Z" itemprop="datePublished">2015-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      （收录）Hexo Landscape主题的字体和JS库优化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#jQuery库的优化"><span class="toc-number">1.</span> <span class="toc-text">jQuery库的优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#跨平台字体优化"><span class="toc-number">2.</span> <span class="toc-text">跨平台字体优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码等宽字体优化"><span class="toc-number">3.</span> <span class="toc-text">代码等宽字体优化</span></a></li></ol>
+          </div>
+        
+        <p>博文原地址：<a href="http://kuangqi.me/tricks/hexo-optimizations-for-mainland-china/" target="_blank" rel="external">The Bloom of Youth | 锦瑟华年</a></p>
+<p>Hexo博客系统的作者来自台湾，因此在这个系统中也使用了一些不符合大陆实际情况的服务，除了留言板、分享按钮等无关大雅的东西之外，直接影响网站打开速度和呈现效果的东西就是来自Google的字体和JavaScript库了，由于Google在大陆基本处于被阻断的状态，所以我们有必要对其中涉及Google服务的地方进行替换。另外，如果使用Windows系统访问，会发现页面上的字体默认为宋体，丑陋的字体也严重影响了访客浏览的体验，我们也需要对跨平台的字体呈现效果进行优化。</p>
+<p>Hexo的Landscape主题对Google的引用主要有2个，第一是使用了在Google上托管的jQuery库，第二是使用了Google的Source Code Pro字体。在Google被封锁后，大部分网友推荐使用360的CDN，也就是useso.com的库，但我经过测试后发现360的CDN在国外的访问速度极慢。网友之所以推荐360的CDN，是因为它可以简单的直接替换Google的服务，只需要改一下域名，URL的其余部分都无需改动。而我发现提供jQuery的国内互联网厂商比比皆是，而提供Google Code Pro字体的除了360还没有找到。因此我希望能够将这两个问题分别解决，而不是用useso一替换了之。</p>
+<h1 id="jQuery库的优化">jQuery库的优化</h1><p>国内提供jQuery的互联网公司很多，大家耳熟能详的互联网公司基本都免费提供了常用JS库的CDN加速服务。在我的测试中，百度的服务的速度在国内国外都比较理想，因此这里将jQuery替换成百度的。另外，我还希望在百度的服务暂时不可用时，能够以网站上自带的jQuery作为备份。</p>
+<p>我们要修改的是themes/landscape/layout/_partial/after-footer.ejs<br>这个文件，将17行的</p>
+<pre><code><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+</code></pre><p>替换为如下代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="handlebars"><span class="xml"></span><br><span class="line">//<span class="cdata">&lt;![CDATA[</span><br><span class="line">if (typeof jQuery == 'undefined') &#123;</span><br><span class="line">document.write(unescape("%3Cscript src='/js/jquery-2.0.3.min.js' type='text/javascript'%3E%3C/script%3E"));</span><br><span class="line">&#125;</span><br><span class="line">// ]]&gt;</span></span><br><span class="line"></span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>这里不但将Google的jQuery替换成了百度的，随后还进行了一个判断，如果获取百度的jQuery失败，则使用本网站自己的jQuery。为了让这段代码有效，我们要去jQuery官方下载合适版本的jQuery并将其放到themes/landscape/source/js/目录下，我将其命名为jquery-2.0.3.min.js。</p>
+<p>还有一点需要特别注意，那就是jQuery这个文件在hexo生产博客时会被解析，因此一定要将jQuery文件开头处的//@ sourceMappingURL=jquery-2.0.3.min.map这一行代码删去，否则会导致博客无法生成。</p>
+<h1 id="跨平台字体优化">跨平台字体优化</h1><p>为了能在各个平台上都显示令人满意的字体，我们要修改CSS文件中的字体设置，列出多个备选的字体，操作系统会依次尝试，使用系统中已安装的字体。我们要修改的是<br>themes/landscape/source/css/_variables.styl这一文件，将其中第22行</p>
+<pre><code><span class="setting">font-sans = <span class="value"><span class="string">"Helvetica Neue"</span>, Helvetica, Arial, sans-serif</span></span>
+</code></pre><p>改成如下内容：</p>
+<pre><code><span class="setting">font-sans = <span class="value"><span class="string">"Helvetica Neue"</span>, <span class="string">"Helvetica"</span>, <span class="string">"Hiragino Sans GB"</span>, <span class="string">"Microsoft YaHei"</span>, <span class="string">"Source Han Sans CN"</span>, <span class="string">"WenQuanYi Micro Hei"</span>, Arial, sans-serif</span></span>
+</code></pre><p>其中海维提卡（Helvetica）、Arial是英文字体，前者一般存在于苹果电脑和移动设备上，后者一般存在于Windows系统中。冬青黑体（Hiragino Sans GB）、思源黑体（Source Han Sans CN）、文泉驿米黑（WenQuanYi Micro Hei）是中文字体，冬青黑体从OS X 10.6开始集成在苹果系统中，文泉驿米黑在Linux的各大发行版中均较为常见，而思源黑体是近期Google和Adobe合作推出的一款开源字体，很多电脑上也安装了这一字体。这样一来，在绝大部分操作系统中就可以显示美观的字体了。</p>
+<h1 id="代码等宽字体优化">代码等宽字体优化</h1><p>Hexo默认的等宽字体是Google的Source Code Pro，我认为为了一个等宽字体去牺牲网站的访问速度实在是有点不值得，而且系统中也会提供一些较为美观的等宽字体。所以相比于绞尽脑汁去获取Google的等宽字体，不如弃用这个在国内残念的字体，然后用与之前类似的方法来列出备选的系统自带字体。要编辑的文件同样是themes/landscape/source/css/_variables.styl这一文件，将其中第24行</p>
+<pre><code><span class="setting">font-mono = <span class="value"><span class="string">"Source Code Pro"</span>, Consolas, Monaco, Menlo, Consolas, monospace</span></span>
+</code></pre><p>改成如下内容：  </p>
+<pre><code><span class="attribute">font-mono </span>=<span class="string"> Consolas, Monaco, Menlo, monospace</span>
+</code></pre><p>最后我们要删除引用Google字体的代码，要编辑的文件是themes/landscape/layout/_partial/after-footer.ejs，将其中的下列代码删除。</p>
+<pre><code>&lt;link href=<span class="string">"http://fonts.googleapis.com/css?family=Source+Code+Pro"</span> rel=<span class="string">"stylesheet"</span> <span class="class"><span class="keyword">type</span></span>=<span class="string">"text/css"</span>&gt;
+</code></pre><p>重新生成博客，一切都和谐了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="www.wyiren.com/2015/10/21/freeNote/hexo-font-configure/" data-id="cig05bpz000038onul1dmvssf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/收录/">收录</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/21/freeNote/hexo-add-contents/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">（收录）为Hexo博客添加目录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/收录/">收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/收录/" style="font-size: 13.33px;">收录</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/环境配置/" style="font-size: 10px;">环境配置</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/10/21/freeNote/hexo-font-configure/">（收录）Hexo Landscape主题的字体和JS库优化</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/21/freeNote/hexo-add-contents/">（收录）为Hexo博客添加目录</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/21/Java/javaconfigure/">Windows下Java工作环境配置</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/21/freeNote/hexo-knowledge/">hexo使用心得</a>
+          </li>
+        
+          <li>
+            <a href="/2015/10/20/Algorithm/1_1/">1. 从第一道面试题谈起</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Alvin Yeats<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof jQuery == 'undefined') {
+  document.write(unescape("%3Cscript src='/js/jquery-2.0.3.min.js' type='text/javascript'%3E%3C/script%3E"));
+}
+// ]]>
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

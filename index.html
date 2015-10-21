@@ -67,10 +67,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-笔记·杂/为hexo博文添加目录" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-freeNote/hexo-font-configure" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/10/21/笔记·杂/为hexo博文添加目录/" class="article-date">
-  <time datetime="2015-10-21T01:12:58.520Z" itemprop="datePublished">2015-10-21</time>
+    <a href="/2015/10/21/freeNote/hexo-font-configure/" class="article-date">
+  <time datetime="2015-10-21T01:53:10.365Z" itemprop="datePublished">2015-10-21</time>
 </a>
     
   </div>
@@ -81,7 +81,67 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/21/笔记·杂/为hexo博文添加目录/">（转）为Hexo博客添加目录</a>
+      <a class="article-title" href="/2015/10/21/freeNote/hexo-font-configure/">（收录）Hexo Landscape主题的字体和JS库优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>博文原地址：<a href="http://kuangqi.me/tricks/hexo-optimizations-for-mainland-china/" target="_blank" rel="external">The Bloom of Youth | 锦瑟华年</a></p>
+<p>Hexo博客系统的作者来自台湾，因此在这个系统中也使用了一些不符合大陆实际情况的服务，除了留言板、分享按钮等无关大雅的东西之外，直接影响网站打开速度和呈现效果的东西就是来自Google的字体和JavaScript库了，由于Google在大陆基本处于被阻断的状态，所以我们有必要对其中涉及Google服务的地方进行替换。另外，如果使用Windows系统访问，会发现页面上的字体默认为宋体，丑陋的字体也严重影响了访客浏览的体验，我们也需要对跨平台的字体呈现效果进行优化。</p>
+<p>Hexo的Landscape主题对Google的引用主要有2个，第一是使用了在Google上托管的jQuery库，第二是使用了Google的Source Code Pro字体。在Google被封锁后，大部分网友推荐使用360的CDN，也就是useso.com的库，但我经过测试后发现360的CDN在国外的访问速度极慢。网友之所以推荐360的CDN，是因为它可以简单的直接替换Google的服务，只需要改一下域名，URL的其余部分都无需改动。而我发现提供jQuery的国内互联网厂商比比皆是，而提供Google Code Pro字体的除了360还没有找到。因此我希望能够将这两个问题分别解决，而不是用useso一替换了之。</p>
+<h1 id="jQuery库的优化">jQuery库的优化</h1><p>国内提供jQuery的互联网公司很多，大家耳熟能详的互联网公司基本都免费提供了常用JS库的CDN加速服务。在我的测试中，百度的服务的速度在国内国外都比较理想，因此这里将jQuery替换成百度的。另外，我还希望在百度的服务暂时不可用时，能够以网站上自带的jQuery作为备份。</p>
+<p>我们要修改的是themes/landscape/layout/_partial/after-footer.ejs<br>这个文件，将17行的</p>
+<pre><code><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+</code></pre><p>替换为如下代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="handlebars"><span class="xml"></span><br><span class="line">//<span class="cdata">&lt;![CDATA[</span><br><span class="line">if (typeof jQuery == 'undefined') &#123;</span><br><span class="line">document.write(unescape("%3Cscript src='/js/jquery-2.0.3.min.js' type='text/javascript'%3E%3C/script%3E"));</span><br><span class="line">&#125;</span><br><span class="line">// ]]&gt;</span></span><br><span class="line"></span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>这里不但将Google的jQuery替换成了百度的，随后还进行了一个判断，如果获取百度的jQuery失败，则使用本网站自己的jQuery。为了让这段代码有效，我们要去jQuery官方下载合适版本的jQuery并将其放到themes/landscape/source/js/目录下，我将其命名为jquery-2.0.3.min.js。</p>
+<p>还有一点需要特别注意，那就是jQuery这个文件在hexo生产博客时会被解析，因此一定要将jQuery文件开头处的//@ sourceMappingURL=jquery-2.0.3.min.map这一行代码删去，否则会导致博客无法生成。</p>
+<h1 id="跨平台字体优化">跨平台字体优化</h1><p>为了能在各个平台上都显示令人满意的字体，我们要修改CSS文件中的字体设置，列出多个备选的字体，操作系统会依次尝试，使用系统中已安装的字体。我们要修改的是<br>themes/landscape/source/css/_variables.styl这一文件，将其中第22行</p>
+<pre><code><span class="setting">font-sans = <span class="value"><span class="string">"Helvetica Neue"</span>, Helvetica, Arial, sans-serif</span></span>
+</code></pre><p>改成如下内容：</p>
+<pre><code><span class="setting">font-sans = <span class="value"><span class="string">"Helvetica Neue"</span>, <span class="string">"Helvetica"</span>, <span class="string">"Hiragino Sans GB"</span>, <span class="string">"Microsoft YaHei"</span>, <span class="string">"Source Han Sans CN"</span>, <span class="string">"WenQuanYi Micro Hei"</span>, Arial, sans-serif</span></span>
+</code></pre><p>其中海维提卡（Helvetica）、Arial是英文字体，前者一般存在于苹果电脑和移动设备上，后者一般存在于Windows系统中。冬青黑体（Hiragino Sans GB）、思源黑体（Source Han Sans CN）、文泉驿米黑（WenQuanYi Micro Hei）是中文字体，冬青黑体从OS X 10.6开始集成在苹果系统中，文泉驿米黑在Linux的各大发行版中均较为常见，而思源黑体是近期Google和Adobe合作推出的一款开源字体，很多电脑上也安装了这一字体。这样一来，在绝大部分操作系统中就可以显示美观的字体了。</p>
+<h1 id="代码等宽字体优化">代码等宽字体优化</h1><p>Hexo默认的等宽字体是Google的Source Code Pro，我认为为了一个等宽字体去牺牲网站的访问速度实在是有点不值得，而且系统中也会提供一些较为美观的等宽字体。所以相比于绞尽脑汁去获取Google的等宽字体，不如弃用这个在国内残念的字体，然后用与之前类似的方法来列出备选的系统自带字体。要编辑的文件同样是themes/landscape/source/css/_variables.styl这一文件，将其中第24行</p>
+<pre><code><span class="setting">font-mono = <span class="value"><span class="string">"Source Code Pro"</span>, Consolas, Monaco, Menlo, Consolas, monospace</span></span>
+</code></pre><p>改成如下内容：  </p>
+<pre><code><span class="attribute">font-mono </span>=<span class="string"> Consolas, Monaco, Menlo, monospace</span>
+</code></pre><p>最后我们要删除引用Google字体的代码，要编辑的文件是themes/landscape/layout/_partial/after-footer.ejs，将其中的下列代码删除。</p>
+<pre><code>&lt;link href=<span class="string">"http://fonts.googleapis.com/css?family=Source+Code+Pro"</span> rel=<span class="string">"stylesheet"</span> <span class="class"><span class="keyword">type</span></span>=<span class="string">"text/css"</span>&gt;
+</code></pre><p>重新生成博客，一切都和谐了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="www.wyiren.com/2015/10/21/freeNote/hexo-font-configure/" data-id="cig05bpz000038onul1dmvssf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/收录/">收录</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-freeNote/hexo-add-contents" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/21/freeNote/hexo-add-contents/" class="article-date">
+  <time datetime="2015-10-21T01:52:11.038Z" itemprop="datePublished">2015-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/21/freeNote/hexo-add-contents/">（收录）为Hexo博客添加目录</a>
     </h1>
   
 
@@ -108,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/10/21/笔记·杂/为hexo博文添加目录/" data-id="cig046h5l0012w4nudjoqsmny" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/10/21/freeNote/hexo-add-contents/" data-id="cig05bpzf00078onup10vubfm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/收录/">收录</a></li></ul>
@@ -120,9 +180,111 @@
 
 
   
-    <article id="post-算法/1_1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Java/javaconfigure" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/10/20/算法/1_1/" class="article-date">
+    <a href="/2015/10/21/Java/javaconfigure/" class="article-date">
+  <time datetime="2015-10-21T01:51:45.122Z" itemprop="datePublished">2015-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/21/Java/javaconfigure/">Windows下Java工作环境配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <h1 id="下载JDK">下载JDK</h1><ol>
+<li>进入<a href="http://www.oracle.com/technetwork/java/index.html" target="_blank" rel="external">java官网</a>“java.oracle.com”;  </li>
+<li>点击<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">Java SE</a>，在新弹出的页面中选择<a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html" target="_blank" rel="external">JRE</a>进行下载：<br><img src="http://ww1.sinaimg.cn/mw690/89b29945gw1ewefoo3h7cj20bi05iab4.jpg" alt="SE"><br><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1ewefonnfwyj20ff0a4q57.jpg" alt="JRE"> </li>
+<li>首先勾选“Accept License Agreement”，然后选择相对应的系统（32位x86，64位x64），并选择exe后缀的文件进行下载；  </li>
+<li>下载好之后点击exe文件等待自动安装完成即可； </li>
+<li>大功告成。</li>
+</ol>
+<h1 id="IDE">IDE</h1><ol>
+<li>在浏览器输入“eslipse.org”进入<a href="http://www.eclipse.org/" target="_blank" rel="external">eslipse官网</a>，点击右边的“DOWNLOAD”按钮进入下载页面；<br><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1eweetafjp4j216v086wgh.jpg" alt="url"></li>
+<li>选择“Eclipse IDE for Java Developers”相对应的系统位数进行下载；<br><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1eweet9hn2pj20ns04d3ze.jpg" alt="bits"></li>
+<li>选择靠近自己所在地的镜像进行下载；<br><img src="http://ww1.sinaimg.cn/mw690/89b29945gw1eweet9y2bsj209g08ot9g.jpg" alt="mirror"></li>
+<li>解压；</li>
+<li>进入解压目录，在eclipse目录下你会找到“eclipse.exe”，双击启动，开始java之路吧。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="www.wyiren.com/2015/10/21/Java/javaconfigure/" data-id="cig05bpzf000a8onupuv71f8q" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/环境配置/">环境配置</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-freeNote/hexo-knowledge" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/21/freeNote/hexo-knowledge/" class="article-date">
+  <time datetime="2015-10-21T01:48:46.555Z" itemprop="datePublished">2015-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/21/freeNote/hexo-knowledge/">hexo使用心得</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>如果照着<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">官方文档</a>的教程来的话，hexo的安装是很简单的</p>
+<h1 id="安装">安装</h1><ul>
+<li>Windows下安装Node.js时可能会报错（错误码：2502 or 2503），<a href="http://jingyan.baidu.com/article/a501d80cec07daec630f5e18.html" target="_blank" rel="external">解决方法</a> </li>
+<li>鉴于某些原因，最好有个全局翻墙工具（推荐使用ss），这样使用npm install会快点，红杏之类的浏览器插件就算了吧。 </li>
+<li>先看官档，以官档为准，很多hexo教程写的乱七八糟的，大部分是道听途说搞来的。</li>
+</ul>
+<h1 id="使用">使用</h1><ul>
+<li>准备发表的文章可以直接丢“yourblog/source/_posts”文件夹里 </li>
+<li>执行”hexo g”命令生成静态文件失败，很可能是你的md文档里包含非法字符，比如直接使用了“{1,2,3},[1,2,3]”这种写法，默认的hexo主题不支持这种写法。实际Markdown 支持以下这些符号前面加上反斜杠来帮助插入普通的符号，加入转义符即可正常使用： </li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">\   反斜线</span><br><span class="line">`   反引号</span><br><span class="line"><span class="bullet">*   </span>星号</span><br><span class="line">_   底线</span><br><span class="line">&#123;&#125;  花括号</span><br><span class="line">[]  方括号</span><br><span class="line">()  括弧</span><br><span class="line"><span class="header">#   井字号</span></span><br><span class="line"><span class="bullet">+   </span>加号</span><br><span class="line"><span class="bullet">-   </span>减号</span><br><span class="line">.   英文句点</span><br><span class="line">!   惊叹号</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="www.wyiren.com/2015/10/21/freeNote/hexo-knowledge/" data-id="cig05bpyk00008onutnjhneir" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Algorithm/1_1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/20/Algorithm/1_1/" class="article-date">
   <time datetime="2015-10-20T08:45:48.306Z" itemprop="datePublished">2015-10-20</time>
 </a>
     
@@ -134,7 +296,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/20/算法/1_1/">1. 从第一道面试题谈起</a>
+      <a class="article-title" href="/2015/10/20/Algorithm/1_1/">1. 从第一道面试题谈起</a>
     </h1>
   
 
@@ -213,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/10/20/算法/1_1/" data-id="cig046h5l000zw4nu1qq7uuyw" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/10/20/Algorithm/1_1/" data-id="cig05bq0a001e8onu907h9jnx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -225,62 +387,9 @@
 
 
   
-    <article id="post-Java/javaconfiger" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Algorithm/3_3" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/25/Java/javaconfiger/" class="article-date">
-  <time datetime="2015-09-25T01:41:36.730Z" itemprop="datePublished">2015-09-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/25/Java/javaconfiger/">Windows下Java工作环境配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <h1 id="下载JDK">下载JDK</h1><ol>
-<li>进入<a href="http://www.oracle.com/technetwork/java/index.html" target="_blank" rel="external">java官网</a>“java.oracle.com”;  </li>
-<li>点击<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">Java SE</a>，在新弹出的页面中选择<a href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html" target="_blank" rel="external">JRE</a>进行下载：<br><img src="http://ww1.sinaimg.cn/mw690/89b29945gw1ewefoo3h7cj20bi05iab4.jpg" alt="SE"><br><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1ewefonnfwyj20ff0a4q57.jpg" alt="JRE"> </li>
-<li>首先勾选“Accept License Agreement”，然后选择相对应的系统（32位x86，64位x64），并选择exe后缀的文件进行下载；  </li>
-<li>下载好之后点击exe文件等待自动安装完成即可； </li>
-<li>大功告成。</li>
-</ol>
-<h1 id="IDE">IDE</h1><ol>
-<li>在浏览器输入“eslipse.org”进入<a href="http://www.eclipse.org/" target="_blank" rel="external">eslipse官网</a>，点击右边的“DOWNLOAD”按钮进入下载页面；<br><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1eweetafjp4j216v086wgh.jpg" alt="url"></li>
-<li>选择“Eclipse IDE for Java Developers”相对应的系统位数进行下载；<br><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1eweet9hn2pj20ns04d3ze.jpg" alt="bits"></li>
-<li>选择靠近自己所在地的镜像进行下载；<br><img src="http://ww1.sinaimg.cn/mw690/89b29945gw1eweet9y2bsj209g08ot9g.jpg" alt="mirror"></li>
-<li>解压；</li>
-<li>进入解压目录，在eclipse目录下你会找到“eclipse.exe”，双击启动，开始java之路吧。</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/25/Java/javaconfiger/" data-id="cig046h5l0019w4nugz35ksvs" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/环境配置/">环境配置</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-算法/3_3" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/17/算法/3_3/" class="article-date">
+    <a href="/2015/09/17/Algorithm/3_3/" class="article-date">
   <time datetime="2015-09-17T07:11:13.519Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
@@ -292,7 +401,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/3_3/">12. BFS与二叉搜索树</a>
+      <a class="article-title" href="/2015/09/17/Algorithm/3_3/">12. BFS与二叉搜索树</a>
     </h1>
   
 
@@ -349,7 +458,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/3_3/" data-id="cig046h3v0000w4nun93tp0af" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/3_3/" data-id="cig05bpzf000f8onuayv7bqgj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -361,9 +470,9 @@
 
 
   
-    <article id="post-算法/3_2" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Algorithm/3_2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/3_2/" class="article-date">
+    <a href="/2015/09/17/Algorithm/3_2/" class="article-date">
   <time datetime="2015-09-17T07:11:08.158Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
@@ -375,7 +484,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/3_2/">11. 分治算法</a>
+      <a class="article-title" href="/2015/09/17/Algorithm/3_2/">11. 分治算法</a>
     </h1>
   
 
@@ -413,7 +522,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/3_2/" data-id="cig046h4a0005w4nuwrd378l4" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/3_2/" data-id="cig05bpzf000k8onub85wl0hy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -425,9 +534,9 @@
 
 
   
-    <article id="post-算法/3_1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Algorithm/3_1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/3_1/" class="article-date">
+    <a href="/2015/09/17/Algorithm/3_1/" class="article-date">
   <time datetime="2015-09-17T07:11:01.175Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
@@ -439,7 +548,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/3_1/">10. 二叉树简介及先序、中序、后序</a>
+      <a class="article-title" href="/2015/09/17/Algorithm/3_1/">10. 二叉树简介及先序、中序、后序</a>
     </h1>
   
 
@@ -490,7 +599,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/3_1/" data-id="cig046h4q0008w4nuib77s2sf" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/3_1/" data-id="cig05bpzf000n8onu4nd1hlf1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -502,9 +611,9 @@
 
 
   
-    <article id="post-算法/2_4" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Algorithm/2_4" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/2_4/" class="article-date">
+    <a href="/2015/09/17/Algorithm/2_4/" class="article-date">
   <time datetime="2015-09-17T07:10:55.625Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
@@ -516,7 +625,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/2_4/">9. 二分搜索扩展题型</a>
+      <a class="article-title" href="/2015/09/17/Algorithm/2_4/">9. 二分搜索扩展题型</a>
     </h1>
   
 
@@ -542,7 +651,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_4/" data-id="cig046h4q000bw4num7qq4l1o" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/2_4/" data-id="cig05bpzf000q8onudassw4tq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -554,9 +663,9 @@
 
 
   
-    <article id="post-算法/2_3" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Algorithm/2_3" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/2_3/" class="article-date">
+    <a href="/2015/09/17/Algorithm/2_3/" class="article-date">
   <time datetime="2015-09-17T07:10:46.347Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
@@ -568,7 +677,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/2_3/">8. 排序数组常见算法</a>
+      <a class="article-title" href="/2015/09/17/Algorithm/2_3/">8. 排序数组常见算法</a>
     </h1>
   
 
@@ -615,7 +724,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_3/" data-id="cig046h4q000ew4nup3ed53l3" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/2_3/" data-id="cig05bpzv000t8onuoqx5hu29" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -627,9 +736,9 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
 
 
   
-    <article id="post-算法/2_2" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Algorithm/2_2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/2_2/" class="article-date">
+    <a href="/2015/09/17/Algorithm/2_2/" class="article-date">
   <time datetime="2015-09-17T07:10:39.851Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
@@ -641,7 +750,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/2_2/">7. 二分搜索模板及变体（下）</a>
+      <a class="article-title" href="/2015/09/17/Algorithm/2_2/">7. 二分搜索模板及变体（下）</a>
     </h1>
   
 
@@ -661,7 +770,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_2/" data-id="cig046h4q000hw4nuwniqyw90" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/2_2/" data-id="cig05bpzv000w8onugumbevuy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -673,9 +782,9 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
 
 
   
-    <article id="post-算法/2_1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Algorithm/2_1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/09/17/算法/2_1/" class="article-date">
+    <a href="/2015/09/17/Algorithm/2_1/" class="article-date">
   <time datetime="2015-09-17T07:10:29.967Z" itemprop="datePublished">2015-09-17</time>
 </a>
     
@@ -687,7 +796,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/2_1/">6. 二分搜索模板及其变体（上）</a>
+      <a class="article-title" href="/2015/09/17/Algorithm/2_1/">6. 二分搜索模板及其变体（上）</a>
     </h1>
   
 
@@ -748,137 +857,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_1/" data-id="cig046h4q000kw4nuojyzyce2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-算法/1_5" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/17/算法/1_5/" class="article-date">
-  <time datetime="2015-09-17T07:10:13.630Z" itemprop="datePublished">2015-09-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/1_5/">5. 链表常见操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>推荐大家看下<a href="http://book.douban.com/subject/3004255/" target="_blank" rel="external">《编程之美》</a>、<a href="http://book.douban.com/subject/25753386/" target="_blank" rel="external">《程序员面试金典》</a><br>还有编程相关网站：<a href="https://leetcode.com/problemset/algorithms/" target="_blank" rel="external">leetcode</a><br>老师讲的很多题其实就是这些书和网站的题</p>
-<h2 id="单链表是否存在环？环的入口是什么？">单链表是否存在环？环的入口是什么？</h2><h3 id="是否存在环">是否存在环</h3><p>1) 判断是否存在环：设置快慢指针fast和slow，fast步速为2，slow为1，若最终fast==slow，那么就证明单链表中一定有环。如果没有环的话，fast一定先到达尾节点</p>
-<p>2) 简单证明：利用相对运动的概念，以slow为参考点（静止不动），那么fast的步速实际为1，当fast超过slow之后，fast以每步一个节点的速度追赶slow，如果链表有环的话，fast一定会追赶到slow，即fast==slow。</p>
-<h3 id="如何找到环的入口">如何找到环的入口</h3><p><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1eurmxod4q0j20eq09tjs5.jpg" alt="第一次相遇"></p>
-<p>字母代表的量：  </p>
-<ul>
-<li>a：链表头结点到环入口的距离  </li>
-<li>r：环长</li>
-<li>蓝色线：fast指针所走的距离2s  </li>
-<li>黑色线：slow指针所走的距离s</li>
-</ul>
-<p>假设链表总长度为L，且fast与slow相遇时fast已经绕环走了n圈，则有如下关系：</p>
-<p>2s = s + n<em>r<br>将s移到左边得：<br>s = n</em>r<br>转换：<br>s = (n-1)<em>r + r = (n-1)</em>r + L-a<br>a+x = (n-1)<em>r + L-a<br>得：<br>a = (n-1)</em>r + L-a-x</p>
-<p>由图可知，（L-a-x）为相遇点到环入口点的距离。由上式可知：<br>从链表头到环入口的距离 = （n-1）圈内环循环 + 相遇点到环入口点的距离<br>将r视为周期的话，a与L-a-x在某种意义上是相等的（实际并不一定相等）。<br>那么由此我们便找到了突破点，为了找到环的入口点，在fast与slow相遇时，将slow指针重新指向单链表的头节点，fast仍然留在相遇点，只不过步速降为与slow相同的1，每次循环只经过一个节点，如此，当fast与slow再次相遇时，那个新的相遇点便是我们苦苦寻找的入口点了。</p>
-<h3 id="如何知道环的长度">如何知道环的长度</h3><p>纪录下相遇点，让slow与fast从该点开始，再次碰撞所走过的操作数就是环的长度r。  </p>
-<h3 id="带环的链表的长度是多少？">带环的链表的长度是多少？</h3><p>通过以上分析我们已经知道了如何求环入口，环长，那么链表长度显然就是两者之和，即：<br>L = a + r</p>
-<h2 id="判断两个链表是否相交">判断两个链表是否相交</h2><p>分析问题之前我们要搞清楚链表相交的一些基本概念  </p>
-<ul>
-<li>明确概念：两个单向链表相交，只能是y型相交，不可能是x型相交。  </li>
-<li>分析：有两个链表，La,Lb,设他们的交点设为p，假设在La中，p的前驱为pre_a，后继为next_a,在Lb中，前驱为pre_b,后继为next_b，则<br>pre_a-&gt;next=p,pre_b-&gt;next=p,接下来看后继,p-&gt;next=next_a,p-&gt;next=next_b；那么问题就出来了，一个单链表的next指针只有一个，<br>怎么跑出两个来呢，所以必有next_a==next_b，于是我们得出两个链表相交只能是Y型相交。明确了这个概念，我们再来堆相交问题进行分析。</li>
-</ul>
-<h3 id="情况一：两个链表都无环">情况一：两个链表都无环</h3><p>1) 问题简化。将链表B接到链表A的后面，如果A、B有交点，则构成一个有环的单链表，而我们刚刚在上面已经讨论了如何判断一个<br>单链表是否有环。<br>2) 若两个链表相交则必为Y型，由此可知两个链表从相交点到尾节点是相同的，我们并不知道他们的相交点位置，但是我们可以遍历得出A、B链表的<br>尾节点，如此，比较他们的尾节点是否相等便可以求证A、B是否相交了。</p>
-<h3 id="情况二：链表有环">情况二：链表有环</h3><p>1) 其中一个链表有环，另外一个链表无环。则两个链表不可能相交。（啥？你不知道为啥？自己看看前面的“明确概念”反省吧）</p>
-<p>2) 那么有环相交的情况只有当两个链表都有环时才会出现，如果两个有环链表相交，则他们拥有共通的环，即环上任意一个节点都存在于<br>两个链表上。因此，通过判断A链表上的快慢指针相遇点是否也在B链表上便可以得出两个链表是否相交了。</p>
-<h2 id="求相交链表的相交点">求相交链表的相交点</h2><p>题目描述：如果两个无环单向链表相交，怎么求出他们相交的第一个节点呢？</p>
-<p>分析：采用对齐的思想。计算两个链表的长度 L1 , L2，分别用两个指针 p1 , p2 指向两个链表的头，然后将较长链表的 p1（假设为 p1）向后移动L2 - L1个节点，然后再同时向后移动p1 , p2，直到 p1 = p2。相遇的点就是相交的第一个节点。</p>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/1_5/" data-id="cig046h55000nw4nun2b5kh5q" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-算法/1_3" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/17/算法/1_3/" class="article-date">
-  <time datetime="2015-09-17T07:09:49.255Z" itemprop="datePublished">2015-09-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/1_3/">3. 工具和经验谈</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <h2 id="工具介绍">工具介绍</h2><ul>
-<li><a href="https://windows.github.com/" target="_blank" rel="external">GitHub for Windows</a>,<a href="https://mac.github.com/" target="_blank" rel="external">GitHub for Mac</a>社区版的git，拥有全球最大的同性交友平台的美称</li>
-<li><a href="https://git-scm.com/downloads" target="_blank" rel="external">git</a>分布式版本控制和软件配置管理软件</li>
-<li><a href="http://www.sublimetext.com/" target="_blank" rel="external">Sublime</a>功能强大颜值超高的编辑器，谁用谁知道</li>
-<li><a href="https://en.wikipedia.org/wiki/Computer_terminal" target="_blank" rel="external">Terminal</a>终端机，程序员应该都懂得，学习下怎么用快捷键打开你电脑上的终端吧</li>
-<li>g++：先在这玩意儿很多Linux都带的有，如果没有你就在终端敲入“apt-get install g++”，Window下推荐使用<a href="https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx" target="_blank" rel="external">Visual Stadio</a>，实在想用g++可以下个<a href="http://sourceforge.net/projects/mingw-w64/?source=recommended" target="_blank" rel="external">MinGW for Windows</a>玩玩</li>
-<li><a href="http://mooc.study.163.com/learn/ZJU-1000002014?tid=1000002010#/learn/content?type=detail&amp;id=1000013004&amp;cid=1000013008" target="_blank" rel="external">Java</a>安装，我认为网易云课堂Java老师翁凯讲的就特别好，前段时间同学还跟我说装java老是失败……然后我就说你可以去看看翁凯老师讲的安装java的教程，过来人表示，选错教程真心害死人</li>
-</ul>
-<h2 id="常见问题">常见问题</h2><p>没带耳机，戴耳机了再详细填坑</p>
-<ul>
-<li>应届生招聘VS非应届生招聘</li>
-<li>准备时间少？基础少？怎么刷题更高效？</li>
-<li>转行找CS怎么准备？</li>
-<li>面试的时候怎么表现自己（or 怎么沟通）</li>
-<li>动态规划完全不懂怎么办？</li>
-<li>面试写出了BUG怎么办？</li>
-</ul>
-<h2 id="推荐书籍">推荐书籍</h2><ul>
-<li><a href="http://book.douban.com/subject/3072383/" target="_blank" rel="external">The Algorithm Design Manual</a>,<a href="http://www3.cs.stonybrook.edu/~algorith/video-lectures/" target="_blank" rel="external">作者的上课视频</a></li>
-<li>大部头<a href="http://book.douban.com/subject/3904676/" target="_blank" rel="external">Introduction to Algorithm</a>,<a href="http://book.douban.com/subject/1418402/" target="_blank" rel="external">TAOCP</a></li>
-<li><a href="http://book.douban.com/subject/10436668/" target="_blank" rel="external">Cracking The Coding Interview</a>屌爆侠CTCI（又称CC150）写的书，准备北美面试的同学必看</li>
-<li><a href="http://book.douban.com/subject/6966465/" target="_blank" rel="external">剑指Offer</a>，适合国内找工作</li>
-<li><a href="http://www.amazon.cn/%E8%BF%9B%E5%86%9B%E7%A1%85%E8%B0%B7-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9D%A2%E8%AF%95%E6%8F%AD%E7%A7%98-%E9%99%88%E4%B8%9C%E9%94%8B/dp/B00IXBJXGA/ref=sr_1_1?ie=UTF8&amp;qid=1438824440&amp;sr=8-1&amp;keywords=%E8%BF%9B%E5%86%9B%E7%A1%85%E8%B0%B7-%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9D%A2%E8%AF%95%E6%8F%AD%E7%A7%98" target="_blank" rel="external">进军硅谷-程序员面试揭秘</a>，有差不多150题，大部分是leetcode上的</li>
-</ul>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/1_3/" data-id="cig046h55000tw4nueag9vqd2" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/Algorithm/2_1/" data-id="cig05bpzv000z8onuplg08u99" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -905,7 +884,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/收录/">收录</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/收录/">收录</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
     </div>
   </div>
 
@@ -914,7 +893,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/收录/" style="font-size: 10px;">收录</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/环境配置/" style="font-size: 10px;">环境配置</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/hexo/" style="font-size: 16.67px;">hexo</a> <a href="/tags/收录/" style="font-size: 13.33px;">收录</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/环境配置/" style="font-size: 10px;">环境配置</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
     </div>
   </div>
 
@@ -923,7 +902,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">13</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -935,23 +914,23 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       <ul>
         
           <li>
-            <a href="/2015/10/21/笔记·杂/为hexo博文添加目录/">（转）为Hexo博客添加目录</a>
+            <a href="/2015/10/21/freeNote/hexo-font-configure/">（收录）Hexo Landscape主题的字体和JS库优化</a>
           </li>
         
           <li>
-            <a href="/2015/10/20/算法/1_1/">1. 从第一道面试题谈起</a>
+            <a href="/2015/10/21/freeNote/hexo-add-contents/">（收录）为Hexo博客添加目录</a>
           </li>
         
           <li>
-            <a href="/2015/09/25/Java/javaconfiger/">Windows下Java工作环境配置</a>
+            <a href="/2015/10/21/Java/javaconfigure/">Windows下Java工作环境配置</a>
           </li>
         
           <li>
-            <a href="/2015/09/17/算法/3_3/">12. BFS与二叉搜索树</a>
+            <a href="/2015/10/21/freeNote/hexo-knowledge/">hexo使用心得</a>
           </li>
         
           <li>
-            <a href="/2015/09/17/算法/3_2/">11. 分治算法</a>
+            <a href="/2015/10/20/Algorithm/1_1/">1. 从第一道面试题谈起</a>
           </li>
         
       </ul>
