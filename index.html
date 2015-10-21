@@ -67,10 +67,63 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-笔记·杂/为hexo博文添加目录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/21/笔记·杂/为hexo博文添加目录/" class="article-date">
+  <time datetime="2015-10-21T01:12:58.520Z" itemprop="datePublished">2015-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/21/笔记·杂/为hexo博文添加目录/">（转）为Hexo博客添加目录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+        <p>博文原地址：<a href="http://kuangqi.me/tricks/enable-table-of-contents-on-hexo/" target="_blank" rel="external">The Bloom of Youth | 锦瑟华年</a></p>
+<p>Hexo博客系统的核心支持生成目录（Table of Contents），但其默认的主题Landscape并不支持目录的显示。我们只需对Landscape的主题文件稍作修改并添加一点目录的CSS就可以在文章前面显示友好的目录了。</p>
+<h1 id="修改Landscape主题的ejs文件">修改Landscape主题的ejs文件</h1><p>我们首先要编辑文章显示页面的模板，也就是<code>themes/landscape/layout/_partial/article.ejs</code><br>文件。为了将目录生成在正文之前，我们首先在这个文件中找到<code>&lt;%- post.content %&gt;</code>，并在<strong>这一行之前</strong>加入如下代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Table of Contents --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%</span> <span class="attribute">if</span> (!<span class="attribute">index</span> &amp;&amp; <span class="attribute">post.toc</span>)&#123; %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"toc"</span> <span class="attribute">class</span>=<span class="value">"toc-article"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">strong</span> <span class="attribute">class</span>=<span class="value">"toc-title"</span>&gt;</span>文章目录<span class="tag">&lt;/<span class="title">strong</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%-</span> <span class="attribute">toc</span>(<span class="attribute">post.content</span>) %&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%</span> &#125; %&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这段代码的含义清晰明了，<code>if</code>语句中有两个条件，<code>!index</code>是为了不在首页的文章摘要中生成目录，<code>post.toc</code>确保了只在显式地标记了<code>toc: true</code>的文章中生成目录。若这两个条件满足，则创建一个目录的<code><div></div></code>。</p>
+<p>修改完这个文件之后，找一篇包含了多个子标题的文章，并在文章开头的<code>front-matter</code>中添加一句<code>toc: true</code>，在浏览器中访问这篇文章，应该可以看到文章的开头处已经有了带链接的目录。但是这样的目录实在太难看，我们还需要添加相应的CSS来将其指定为我们想要的样式。</p>
+<h1 id="为目录编写CSS文件">为目录编写CSS文件</h1><p>要指定目录的样式，我们要修改的文件是<code>themes/landscape/source/css/<br>_partial/article.styl</code>。在文件的最后，添加如下代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*toc*/</span></span><br><span class="line"><span class="class">.toc-article</span></span><br><span class="line"><span class="tag">background</span> <span class="id">#eee</span></span><br><span class="line"><span class="tag">border</span> 1<span class="tag">px</span> <span class="tag">solid</span> <span class="id">#bbb</span></span><br><span class="line"><span class="tag">border-radius</span> 10<span class="tag">px</span></span><br><span class="line"><span class="tag">margin</span> 1<span class="class">.5em</span> 0 0<span class="class">.3em</span> 1<span class="class">.5em</span></span><br><span class="line"><span class="tag">padding</span> 1<span class="class">.2em</span> 1<span class="tag">em</span> 0 1<span class="tag">em</span></span><br><span class="line"><span class="tag">max-width</span> 28%</span><br><span class="line"></span><br><span class="line"><span class="class">.toc-title</span></span><br><span class="line"><span class="tag">font-size</span> 120%</span><br><span class="line"></span><br><span class="line"><span class="id">#toc</span></span><br><span class="line"><span class="tag">line-height</span> 1<span class="tag">em</span></span><br><span class="line"><span class="tag">font-size</span> 0<span class="class">.9em</span></span><br><span class="line"><span class="tag">float</span> <span class="tag">right</span></span><br><span class="line"><span class="class">.toc</span></span><br><span class="line"><span class="tag">padding</span> 0</span><br><span class="line"><span class="tag">margin</span> 1<span class="tag">em</span></span><br><span class="line"><span class="tag">line-height</span> 1<span class="class">.8em</span></span><br><span class="line"><span class="tag">li</span></span><br><span class="line"><span class="tag">list-style-type</span> <span class="tag">none</span></span><br><span class="line"></span><br><span class="line"><span class="class">.toc-child</span> </span><br><span class="line"><span class="tag">margin-left</span> 1<span class="tag">em</span></span><br></pre></td></tr></table></figure>
+<p>第一段的<code>toc-article</code>指定了目录整个<code>div</code>的背景色、边框色、倒角半径、各种间距以及最大的宽度。注意这里最好指定目录的最大宽度，我将其设为了28%，也就是文章正文那个框的宽度的28%，也可以设为一个固定的长度，比如在笔记本电脑上<code>16em</code>就是个不错的宽度，但为了能适配各种不同尺寸的屏幕，最好还是设置为百分比。如果不指定最大宽度，遇到比较长的标题时，生成的目录会非常难看。这个最大宽度的设置是我在网上其他添加目录的方法中没有见到的。</p>
+<p>第二段的<code>toc-title</code>指的就是“文章目录”那四个字，这四个字要比其他字大一些，将其字号设为其他字的120%。</p>
+<p>第三段的<code>#toc.toc</code>指定了目录列表的一些细节，将<code>font-size</code>设为<code>0.9em</code>会让目录的字比文章的字稍小一些。最后的.toc-child指定了二级目录的缩进量。</p>
+<p>再次生成页面，应该已经可以显示比较美观的目录了。</p>
+<h1 id="收尾工作">收尾工作</h1><p>通常情况下我们不需要为每一篇文章都添加目录，因为大部分文章的长度还是相对较短，或者结构简单而没有添加小标题。在我的博客上，需要添加目录的长文还是相对较少的。因为我选择了默认不生成目录，而手动为需要目录的文章添加显式地标记。</p>
+<p>下面我就需要编辑每一篇需要添加目录的文章，在文章开头的<code>front-matter</code>中加入<code>toc: true</code>。<br><img src="http://ww4.sinaimg.cn/mw690/89b29945gw1ex8gplzy82j20am05mjs6.jpg" alt="toc"><br>效果图：<br><img src="http://ww1.sinaimg.cn/mw690/89b29945gw1ex8gplgi3tj20oj0chdia.jpg" alt="summy"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="www.wyiren.com/2015/10/21/笔记·杂/为hexo博文添加目录/" data-id="cig046h5l0012w4nudjoqsmny" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/收录/">收录</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-算法/1_1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/10/20/算法/1_1/" class="article-date">
-  <time datetime="2015-10-20T08:42:06.596Z" itemprop="datePublished">2015-10-20</time>
+  <time datetime="2015-10-20T08:45:48.306Z" itemprop="datePublished">2015-10-20</time>
 </a>
     
   </div>
@@ -91,13 +144,13 @@
       
         
         <p>机构：博览GeekBand<br>讲师：董飞<br>更多详细内容请认真观看教学视频:)</p>
-<ul>
+<ol>
 <li>第一道题 </li>
 <li>常见误区</li>
 <li>面试官视角</li>
 <li>自我反思</li>
-</ul>
-<h3 id="你需要了解的一些东西">你需要了解的一些东西</h3><ul>
+</ol>
+<h2 id="你需要了解的一些东西">你需要了解的一些东西</h2><ul>
 <li>浏览器：<a href="https://www.google.com/webhp?hl=zh-CN" target="_blank" rel="external">谷歌</a></li>
 <li>翻墙：<a href="https://www.google.com/search?q=%E6%80%8E%E4%B9%88%E7%BF%BB%E5%A2%99&amp;oq=%E6%80%8E%E4%B9%88%E7%BF%BB%E5%A2%99&amp;aqs=chrome..69i57j69i60l3j69i65j69i60.2444j0j4&amp;sourceid=chrome&amp;es_sm=122&amp;ie=UTF-8" target="_blank" rel="external">翻墙教程</a></li>
 <li>工具：在线文档网站<a href="http://collabedit.com/" target="_blank" rel="external">collabedit</a></li>
@@ -160,7 +213,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/10/20/算法/1_1/" data-id="ciez04yxv000z5snugv91zkho" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/10/20/算法/1_1/" data-id="cig046h5l000zw4nu1qq7uuyw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -213,7 +266,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/25/Java/javaconfiger/" data-id="ciez04yxv00155snu9tcgq99l" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/25/Java/javaconfiger/" data-id="cig046h5l0019w4nugz35ksvs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/环境配置/">环境配置</a></li></ul>
@@ -296,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/3_3/" data-id="ciez04ywk00005snu8lxhpabt" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/3_3/" data-id="cig046h3v0000w4nun93tp0af" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -360,7 +413,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/3_2/" data-id="ciez04yx000055snusrisd49e" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/3_2/" data-id="cig046h4a0005w4nuwrd378l4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -437,7 +490,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/3_1/" data-id="ciez04yx000085snutqkrw3bn" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/3_1/" data-id="cig046h4q0008w4nuib77s2sf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -489,7 +542,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_4/" data-id="ciez04yx0000b5snugqmx50uu" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/2_4/" data-id="cig046h4q000bw4num7qq4l1o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -562,7 +615,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_3/" data-id="ciez04yx0000e5snu6fseru5y" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/2_3/" data-id="cig046h4q000ew4nup3ed53l3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -608,7 +661,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_2/" data-id="ciez04yx0000h5snuj4peb5te" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/2_2/" data-id="cig046h4q000hw4nuwniqyw90" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -695,7 +748,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/2_1/" data-id="ciez04yxg000k5snu3acsg03j" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/2_1/" data-id="cig046h4q000kw4nuojyzyce2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -761,7 +814,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/1_5/" data-id="ciez04yxg000n5snua4grk78j" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/1_5/" data-id="cig046h55000nw4nun2b5kh5q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -825,98 +878,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
       
     </div>
     <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/1_3/" data-id="ciez04yxv000t5snus9hq9v8x" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-算法/1_2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/09/17/算法/1_2/" class="article-date">
-  <time datetime="2015-09-17T07:09:49.240Z" itemprop="datePublished">2015-09-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/17/算法/1_2/">2. 面试中的算法模版</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-        <p>书：cracking the coding interview <a href="http://book.douban.com/subject/10436668/" target="_blank" rel="external">豆瓣</a> <a href="http://www.amazon.cn/%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9D%A2%E8%AF%95%E9%87%91%E5%85%B8-%E9%BA%A6%E5%85%8B%E9%81%93%E5%B0%94/dp/B00G8VOQOG/ref=sr_1_cc_1?s=aps&amp;ie=UTF8&amp;qid=1437569486&amp;sr=1-1-catcorr&amp;keywords=Cracking+the+Coding+Interview" target="_blank" rel="external">亚马逊</a><br>网站：<a href="http://www.careercup.com/" target="_blank" rel="external">careercup</a></p>
-<h2 id="代码风格">代码风格</h2><p>代码块可分为三大块：异常处理（空串和边界处理），主体，返回值  </p>
-<p>代码风格（可参考Google的编程语言规范）  </p>
-<ul>
-<li>变量名的命名（有意义的变量名）</li>
-<li>缩进（语句块）</li>
-<li>空格（运算符两边）</li>
-<li>代码可读性（即使if语句只有一句也要加花括号）</li>
-</ul>
-<p>《代码大全》中给出的参考</p>
-<h2 id="基本代码素养">基本代码素养</h2><ul>
-<li>关于空格<br>for，if，else，while等记得加空格符<br>用空行把大块代码分成逻辑上的“段落”</li>
-<li>关于括号<br>c指针中的指针符靠近类型名，如写成int<em> p，而不写成int </em>p<br>一个函数只专注做一件事</li>
-<li>关于命名<br><a href="https://zh.wikipedia.org/wiki/%E9%A7%9D%E5%B3%B0%E5%BC%8F%E5%A4%A7%E5%B0%8F%E5%AF%AB" target="_blank" rel="external">驼峰写法</a></li>
-</ul>
-<h2 id="实战算法策略">实战算法策略</h2><ul>
-<li>总结归类相似题目</li>
-<li>找出适合同一类题目的模板程序</li>
-<li>对基础题熟练掌握</li>
-</ul>
-<h2 id="再看一道简单题">再看一道简单题</h2><h3 id="Memmove">Memmove</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">memmove</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">const</span> <span class="keyword">void</span> *src, size_t n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="comment">// implementation here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="陷阱">陷阱</h3><ul>
-<li>内存重叠的处理</li>
-<li>临时变量太多或者没有安全释放</li>
-<li>没有测试内存越界</li>
-<li>指针操作不熟悉</li>
-</ul>
-<h3 id="正确写法">正确写法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">memmove</span><span class="params">(<span class="keyword">void</span> *dest, <span class="keyword">const</span> <span class="keyword">void</span> *src, size_t n)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> *p1 = dest;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">char</span> *p2 = src;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (p2 &lt; p1) &#123;</span><br><span class="line">		p2 += n;</span><br><span class="line">		p1 += n;</span><br><span class="line">		<span class="keyword">while</span> (n-- != <span class="number">0</span>)</span><br><span class="line">			*--p1 = *--p2;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">while</span> (n-- != <span class="number">0</span>)</span><br><span class="line">			*p1++ = *p2++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="排列组合模板">排列组合模板</h2><h3 id="Subsets">Subsets</h3><p>{1,2,3}<br>{ {},{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3} }<br>转化为程序问题  </p>
-<h4 id="Subsets-1">Subsets</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">subsets</span><span class="params">(<span class="keyword">int</span>[] num)</span> </span>&#123;</span><br><span class="line">	ArrayList&lt;Integer&gt; path = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">	Arrays.sort(num);</span><br><span class="line">	subsetsHelper(path, num, <span class="number">0</span>);	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">subsetsHelper</span><span class="params">(ArrayList&lt;Integer&gt; path, <span class="keyword">int</span>[] num, <span class="keyword">int</span> pos)</span> </span>&#123;</span><br><span class="line">	outputToResult(path);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = pos; i &lt; num.length; i++) &#123;</span><br><span class="line">		path.add(num[i]);</span><br><span class="line">		subsetsHelper(path, num, i + <span class="number">1</span>);</span><br><span class="line">		path.remove(path.size() - <span class="number">1</span>);	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Subsets-Sample">Subsets-Sample</h4><p>对递归图的理解</p>
-<h3 id="Unique_Subsets">Unique Subsets</h3><p>{1,2,2}<br>{ {},{1},{2},{1,2},{2,2},{1,2,2} }</p>
-<h4 id="Unique_Subsets-1">Unique Subsets</h4><ul>
-<li>与Subsets有关，先背下Subsets的模板  </li>
-<li>既然要求Unique的，就想办法排除掉重复的。  </li>
-<li>思考哪些情况会重复？如{1,2(1),2(2),2(3)}，规定{1,2(1)}和{1,2(2)}重复，{1,2(1),2(2)}和{1,2(2),2(3)}重复。观察规律。  </li>
-<li>得出规律：我们只关心取多少个2，不关心取哪几个。</li>
-<li>规定必须从第一个2开始连续取（作为重复集合中的代表），如必须是{1,2(1)}不能是{1,2(2)}  </li>
-<li>将这个逻辑转换为程序语言去判断</li>
-</ul>
-<h3 id="Unique_Permutations">Unique Permutations</h3><p>[1,2,2]<br>[1,2,2],[2,1,2],[2,2,1]</p>
-<h3 id="排列组合模板总结">排列组合模板总结</h3><ul>
-<li>使用范围<br>几乎所有的搜索问题</li>
-<li>根据具体题目要求进行改动<br>什么时候输出<br>哪些情况需要跳过</li>
-</ul>
-<h3 id="使用该模板的题目">使用该模板的题目</h3><ul>
-<li>Combination Sum</li>
-<li>Letter Combination of a Phone Number</li>
-<li>Palindrome Partitioning</li>
-<li>Restore IP Address</li>
-</ul>
-<hr>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="www.wyiren.com/2015/09/17/算法/1_2/" data-id="ciez04yxv000w5snuw8hmv0hq" class="article-share-link">Share</a>
+      <a data-url="www.wyiren.com/2015/09/17/算法/1_3/" data-id="cig046h55000tw4nueag9vqd2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/极客班/">极客班</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
@@ -943,7 +905,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/收录/">收录</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/极客班/">极客班</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/环境配置/">环境配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">12</span></li></ul>
     </div>
   </div>
 
@@ -952,7 +914,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/环境配置/" style="font-size: 10px;">环境配置</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
+      <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/收录/" style="font-size: 10px;">收录</a> <a href="/tags/极客班/" style="font-size: 20px;">极客班</a> <a href="/tags/环境配置/" style="font-size: 10px;">环境配置</a> <a href="/tags/算法/" style="font-size: 20px;">算法</a>
     </div>
   </div>
 
@@ -961,7 +923,7 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">13</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">13</span></li></ul>
     </div>
   </div>
 
@@ -971,6 +933,10 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/10/21/笔记·杂/为hexo博文添加目录/">（转）为Hexo博客添加目录</a>
+          </li>
         
           <li>
             <a href="/2015/10/20/算法/1_1/">1. 从第一道面试题谈起</a>
@@ -986,10 +952,6 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
         
           <li>
             <a href="/2015/09/17/算法/3_2/">11. 分治算法</a>
-          </li>
-        
-          <li>
-            <a href="/2015/09/17/算法/3_1/">10. 二叉树简介及先序、中序、后序</a>
           </li>
         
       </ul>
@@ -1021,7 +983,14 @@ array2:[<span class="number">3</span> <span class="number">6</span> <span class=
 </nav>
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof jQuery == 'undefined') {
+  document.write(unescape("%3Cscript src='/js/jquery-2.0.3.min.js' type='text/javascript'%3E%3C/script%3E"));
+}
+// ]]>
+</script>
 
 
   <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
